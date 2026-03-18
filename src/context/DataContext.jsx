@@ -33,7 +33,18 @@ export const useData = () => useContext(DataContext);
 export const DataProvider = ({ children }) => {
   const [properties, setProperties] = useState(() => {
     const saved = localStorage.getItem('siteProperties');
-    return saved ? JSON.parse(saved) : initialProperties;
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        return parsed.map(p => ({
+          ...p,
+          price: typeof p.price === 'string' ? p.price.replace(/\$/g, '₹') : p.price
+        }));
+      } catch (e) {
+        return initialProperties;
+      }
+    }
+    return initialProperties;
   });
 
   const [agents, setAgents] = useState(() => {
