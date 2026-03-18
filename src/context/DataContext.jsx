@@ -13,6 +13,19 @@ const initialHero = {
   subtitle: 'Premium real estate curated for discerning buyers and investors.'
 };
 
+const initialLocations = [
+  { id: 'loc-1', name: 'New York' },
+  { id: 'loc-2', name: 'Beverly Hills' },
+  { id: 'loc-3', name: 'Seattle' },
+  { id: 'loc-4', name: 'Chicago' }
+];
+
+const initialPropertyTypes = [
+  { id: 'pt-1', name: 'Buy' },
+  { id: 'pt-2', name: 'Rent' },
+  { id: 'pt-3', name: 'Commercial' }
+];
+
 const DataContext = createContext();
 
 export const useData = () => useContext(DataContext);
@@ -43,6 +56,16 @@ export const DataProvider = ({ children }) => {
     return saved ? JSON.parse(saved) : initialHero;
   });
 
+  const [locations, setLocations] = useState(() => {
+    const saved = localStorage.getItem('siteLocations');
+    return saved ? JSON.parse(saved) : initialLocations;
+  });
+
+  const [propertyTypes, setPropertyTypes] = useState(() => {
+    const saved = localStorage.getItem('sitePropertyTypes');
+    return saved ? JSON.parse(saved) : initialPropertyTypes;
+  });
+
   useEffect(() => {
     localStorage.setItem('siteProperties', JSON.stringify(properties));
   }, [properties]);
@@ -63,6 +86,14 @@ export const DataProvider = ({ children }) => {
     localStorage.setItem('siteHero', JSON.stringify(hero));
   }, [hero]);
 
+  useEffect(() => {
+    localStorage.setItem('siteLocations', JSON.stringify(locations));
+  }, [locations]);
+
+  useEffect(() => {
+    localStorage.setItem('sitePropertyTypes', JSON.stringify(propertyTypes));
+  }, [propertyTypes]);
+
   const value = {
     properties,
     setProperties,
@@ -74,6 +105,10 @@ export const DataProvider = ({ children }) => {
     setCategories,
     hero,
     setHero,
+    locations,
+    setLocations,
+    propertyTypes,
+    setPropertyTypes,
     featuredProperties: properties, // alias for existing uses
     teamAgents: agents // alias for existing uses
   };

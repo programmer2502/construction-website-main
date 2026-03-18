@@ -4,7 +4,7 @@ import { Plus, Edit2, Trash2, Save, X, Lock, LogOut } from 'lucide-react';
 import './Admin.css';
 
 const Admin = () => {
-  const { properties, setProperties, agents, setAgents, testimonials, setTestimonials, categories, setCategories, hero, setHero } = useData();
+  const { properties, setProperties, agents, setAgents, testimonials, setTestimonials, categories, setCategories, hero, setHero, locations, setLocations, propertyTypes, setPropertyTypes } = useData();
   const [activeTab, setActiveTab] = useState('properties');
 
   // Auth state
@@ -121,6 +121,42 @@ const Admin = () => {
     }
   };
 
+  // Location Handlers
+  const saveLocation = (e) => {
+    e.preventDefault();
+    if (editingId === 'new') {
+      const newLoc = { ...formData, id: `loc-${Date.now()}` };
+      setLocations([...locations, newLoc]);
+    } else {
+      setLocations(locations.map(l => l.id === editingId ? formData : l));
+    }
+    cancelEdit();
+  };
+
+  const deleteLocation = (id) => {
+    if(window.confirm('Delete this location?')) {
+      setLocations(locations.filter(l => l.id !== id));
+    }
+  };
+
+  // Property Type Handlers
+  const savePropertyType = (e) => {
+    e.preventDefault();
+    if (editingId === 'new') {
+      const newPT = { ...formData, id: `pt-${Date.now()}` };
+      setPropertyTypes([...propertyTypes, newPT]);
+    } else {
+      setPropertyTypes(propertyTypes.map(pt => pt.id === editingId ? formData : pt));
+    }
+    cancelEdit();
+  };
+
+  const deletePropertyType = (id) => {
+    if(window.confirm('Delete this property type?')) {
+      setPropertyTypes(propertyTypes.filter(pt => pt.id !== id));
+    }
+  };
+
   // Hero Handlers
   const saveHero = (e) => {
     e.preventDefault();
@@ -153,14 +189,20 @@ const Admin = () => {
                 </div>
                 <div className="admin-form-group">
                   <label>Location</label>
-                  <input className="admin-input" name="location" value={formData.location || ''} onChange={handleInputChange} required />
+                  <select className="admin-input" name="location" value={formData.location || ''} onChange={handleInputChange} required>
+                    <option value="" disabled>Select Location</option>
+                    {locations.map(loc => (
+                      <option key={loc.id} value={loc.name}>{loc.name}</option>
+                    ))}
+                  </select>
                 </div>
                 <div className="admin-form-group">
                   <label>Type</label>
-                  <select className="admin-input" name="type" value={formData.type || 'Buy'} onChange={handleInputChange}>
-                    <option value="Buy">Buy</option>
-                    <option value="Rent">Rent</option>
-                    <option value="Commercial">Commercial</option>
+                  <select className="admin-input" name="type" value={formData.type || ''} onChange={handleInputChange} required>
+                    <option value="" disabled>Select Type</option>
+                    {propertyTypes.map(pt => (
+                      <option key={pt.id} value={pt.name}>{pt.name}</option>
+                    ))}
                   </select>
                 </div>
                 <div className="admin-form-group">
@@ -405,6 +447,92 @@ const Admin = () => {
       );
     }
 
+    if (activeTab === 'locations') {
+      return (
+        <div className="admin-glass-panel animate-fade-in">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+            <h2>Manage Locations</h2>
+            <button className="admin-btn admin-btn-primary" onClick={() => startEdit({ id: 'new', name: '' })}>
+              <Plus size={18} /> Add Location
+            </button>
+          </div>
+          
+          {editingId && (
+            <form onSubmit={saveLocation} style={{ background: 'rgba(0,0,0,0.2)', padding: '1.5rem', borderRadius: '12px', marginBottom: '2rem' }}>
+              <h3 style={{ marginBottom: '1rem' }}>{editingId === 'new' ? 'New Location' : 'Edit Location'}</h3>
+              <div className="admin-form-group">
+                <label>Location Name</label>
+                <input className="admin-input" name="name" value={formData.name || ''} onChange={handleInputChange} required />
+              </div>
+              <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+                <button type="submit" className="admin-btn admin-btn-primary"><Save size={18}/> Save</button>
+                <button type="button" className="admin-btn admin-btn-danger" onClick={cancelEdit}><X size={18}/> Cancel</button>
+              </div>
+            </form>
+          )}
+
+          <div className="admin-list">
+            {locations.map(l => (
+              <div key={l.id} className="admin-list-item">
+                <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                  <div className="admin-item-content">
+                    <h4>{l.name}</h4>
+                  </div>
+                </div>
+                <div className="admin-item-actions">
+                  <button className="admin-btn-edit" onClick={() => startEdit(l)}><Edit2 size={16}/></button>
+                  <button className="admin-btn-edit admin-btn-danger" onClick={() => deleteLocation(l.id)}><Trash2 size={16} color="currentColor"/></button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    if (activeTab === 'property-types') {
+      return (
+        <div className="admin-glass-panel animate-fade-in">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+            <h2>Manage Property Types</h2>
+            <button className="admin-btn admin-btn-primary" onClick={() => startEdit({ id: 'new', name: '' })}>
+              <Plus size={18} /> Add Property Type
+            </button>
+          </div>
+          
+          {editingId && (
+            <form onSubmit={savePropertyType} style={{ background: 'rgba(0,0,0,0.2)', padding: '1.5rem', borderRadius: '12px', marginBottom: '2rem' }}>
+              <h3 style={{ marginBottom: '1rem' }}>{editingId === 'new' ? 'New Property Type' : 'Edit Property Type'}</h3>
+              <div className="admin-form-group">
+                <label>Type Name</label>
+                <input className="admin-input" name="name" value={formData.name || ''} onChange={handleInputChange} required />
+              </div>
+              <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+                <button type="submit" className="admin-btn admin-btn-primary"><Save size={18}/> Save</button>
+                <button type="button" className="admin-btn admin-btn-danger" onClick={cancelEdit}><X size={18}/> Cancel</button>
+              </div>
+            </form>
+          )}
+
+          <div className="admin-list">
+            {propertyTypes.map(pt => (
+              <div key={pt.id} className="admin-list-item">
+                <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                  <div className="admin-item-content">
+                    <h4>{pt.name}</h4>
+                  </div>
+                </div>
+                <div className="admin-item-actions">
+                  <button className="admin-btn-edit" onClick={() => startEdit(pt)}><Edit2 size={16}/></button>
+                  <button className="admin-btn-edit admin-btn-danger" onClick={() => deletePropertyType(pt.id)}><Trash2 size={16} color="currentColor"/></button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
     if (activeTab === 'hero') {
       return (
         <div className="admin-glass-panel animate-fade-in">
@@ -509,6 +637,18 @@ const Admin = () => {
                 onClick={() => { setActiveTab('testimonials'); cancelEdit(); }}
               >
                 Testimonials
+              </button>
+              <button 
+                className={`admin-tab ${activeTab === 'locations' ? 'active' : ''}`}
+                onClick={() => { setActiveTab('locations'); cancelEdit(); }}
+              >
+                Locations
+              </button>
+              <button 
+                className={`admin-tab ${activeTab === 'property-types' ? 'active' : ''}`}
+                onClick={() => { setActiveTab('property-types'); cancelEdit(); }}
+              >
+                Property Types
               </button>
               <button 
                 className={`admin-tab ${activeTab === 'categories' ? 'active' : ''}`}

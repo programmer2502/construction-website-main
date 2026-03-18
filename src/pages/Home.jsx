@@ -9,7 +9,7 @@ import './Home.css';
 
 const Home = () => {
   const navigate = useNavigate();
-  const { featuredProperties, teamAgents, testimonials, categories, hero } = useData();
+  const { featuredProperties, teamAgents, testimonials, categories, hero, locations, propertyTypes } = useData();
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -29,16 +29,23 @@ const Home = () => {
             <form className="search-bar" onSubmit={handleSearch}>
               <div className="search-input-group">
                 <label>Location</label>
-                <input type="text" placeholder="City, neighborhood, or zip" />
+                <select defaultValue="">
+                  <option value="" disabled>City, neighborhood</option>
+                  <option value="Any">Any Location</option>
+                  {locations.map(loc => (
+                    <option key={loc.id} value={loc.name}>{loc.name}</option>
+                  ))}
+                </select>
               </div>
               <div className="search-divider"></div>
               <div className="search-input-group">
                 <label>Property Type</label>
                 <select defaultValue="">
                   <option value="" disabled>Select type</option>
-                  <option value="Buy">Buy</option>
-                  <option value="Rent">Rent</option>
-                  <option value="Commercial">Commercial</option>
+                  <option value="All">All Types</option>
+                  {propertyTypes.map(pt => (
+                    <option key={pt.id} value={pt.name}>{pt.name}</option>
+                  ))}
                 </select>
               </div>
               <div className="search-divider"></div>
