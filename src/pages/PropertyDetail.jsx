@@ -11,11 +11,11 @@ import './PropertyDetail.css';
 const PropertyDetail = () => {
   const { id } = useParams();
   const [activeTab, setActiveTab] = useState('overview');
-  
+
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { featuredProperties, teamAgents } = useData();
   const isSaved = isInWishlist(id);
-  
+
   // Find property from mock data, default to first if not found
   const property = featuredProperties.find(p => p.id === id) || featuredProperties[0];
   const agent = teamAgents[0]; // Assign random agent
@@ -39,7 +39,7 @@ const PropertyDetail = () => {
             <button className="gallery-action-btn" aria-label="Share">
               <Share2 size={20} />
             </button>
-            <button 
+            <button
               className={`gallery-action-btn ${isSaved ? 'text-red' : ''}`}
               onClick={() => toggleWishlist(property.id)}
               aria-label="Save"
@@ -52,15 +52,15 @@ const PropertyDetail = () => {
           <img src="https://images.unsplash.com/photo-1628102491629-77858abdd15d?auto=format&fit=crop&w=600&q=80" alt="thumb 1" />
           <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80" alt="thumb 2" />
           <div className="gallery-more">
-             <ImageIcon size={24} />
-             <span>View All 24 Photos</span>
+            <ImageIcon size={24} />
+            <span>View All 24 Photos</span>
           </div>
         </div>
       </div>
 
       <div className="container mt-4">
         <Link to="/listings" className="back-link"><ChevronLeft size={16} /> Back to Listings</Link>
-        
+
         <div className="property-layout">
           {/* Main Info */}
           <div className="property-main-content">
@@ -110,19 +110,19 @@ const PropertyDetail = () => {
 
             {/* Tabs */}
             <div className="property-tabs">
-              <button 
+              <button
                 className={`tab-btn ${activeTab === 'overview' ? 'active' : ''}`}
                 onClick={() => setActiveTab('overview')}
               >
                 <Info size={16} /> Overview
               </button>
-              <button 
+              <button
                 className={`tab-btn ${activeTab === 'amenities' ? 'active' : ''}`}
                 onClick={() => setActiveTab('amenities')}
               >
                 <Check size={16} /> Amenities
               </button>
-              <button 
+              <button
                 className={`tab-btn ${activeTab === 'map' ? 'active' : ''}`}
                 onClick={() => setActiveTab('map')}
               >
@@ -159,9 +159,9 @@ const PropertyDetail = () => {
                   <h3>Location Map</h3>
                   <div className="map-embed">
                     {/* Fake Google Maps Embed */}
-                    <img 
-                      src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=800&q=80" 
-                      alt="Map View" 
+                    <img
+                      src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=800&q=80"
+                      alt="Map View"
                       className="fake-map"
                     />
                     <div className="map-marker-fake">
@@ -171,9 +171,9 @@ const PropertyDetail = () => {
                 </div>
               )}
             </div>
-            
+
             <hr className="divider" />
-            
+
             {/* Similar Properties */}
             <div className="similar-properties">
               <h3>Similar Properties</h3>
@@ -190,7 +190,7 @@ const PropertyDetail = () => {
           <aside className="property-sidebar">
             <div className="sidebar-sticky">
               <div className="contact-card widget-card">
-                <h4 className="widget-title">Contact Agent</h4>
+                <h4 className="widget-title">Contact Person</h4>
                 <div className="agent-profile-sm">
                   <img src={agent.image} alt={agent.name} />
                   <div>
@@ -198,24 +198,24 @@ const PropertyDetail = () => {
                     <span>{agent.title}</span>
                   </div>
                 </div>
-                
+
                 <form className="contact-form" onSubmit={(e) => e.preventDefault()}>
                   <input type="text" placeholder="Your Name" className="widget-input" required />
                   <input type="email" placeholder="Your Email" className="widget-input" required />
                   <input type="tel" placeholder="Your Phone" className="widget-input" required />
                   <textarea placeholder="I'm interested in this property..." className="widget-input" rows="3" required></textarea>
-                  
+
                   <Button type="submit" className="w-100 mt-2">Send Message</Button>
                 </form>
-                
+
                 <div className="quick-contact">
                   <a href={`tel:${agent.phone}`} className="btn btn-outline w-100 mb-2 mt-2">Call Agent</a>
-                  <a href={`https://wa.me/${agent.phone.replace('+','')}`} target="_blank" rel="noreferrer" className="btn btn-primary whatsapp-btn w-100">
+                  <a href={`https://wa.me/${agent.phone.replace('+', '')}`} target="_blank" rel="noreferrer" className="btn btn-primary whatsapp-btn w-100">
                     WhatsApp
                   </a>
                 </div>
               </div>
-              
+
               {property.type === 'Buy' && <EmiCalculator defaultPrice={parseInt(property.price.replace(/[^0-9]/g, '')) || 1000000} />}
             </div>
           </aside>

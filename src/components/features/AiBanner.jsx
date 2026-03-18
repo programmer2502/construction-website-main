@@ -29,7 +29,7 @@ const AiBanner = () => {
         <form className="ai-search-form" onSubmit={handleSearch}>
           <input 
             type="text" 
-            placeholder="e.g. '3 bedroom apartment downtown under $5k'" 
+            placeholder="e.g. '3 bedroom apartment downtown under ₹50L'"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />

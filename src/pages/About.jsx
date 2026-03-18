@@ -33,7 +33,7 @@ const About = () => {
           </div>
           <div>
              <TrendingUp size={40} color="var(--color-accent)" style={{ marginBottom: '1rem' }} />
-             <h3 className="font-serif mb-2">$2B+ Sales</h3>
+             <h3 className="font-serif mb-2">₹2B+ Sales</h3>
              <p className="text-muted">Total transaction volume processed through our platform.</p>
           </div>
           <div>

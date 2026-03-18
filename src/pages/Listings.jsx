@@ -13,11 +13,33 @@ const Listings = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const typeParam = searchParams.get('type') || 'All';
+  const catParam = searchParams.get('cat') || 'All';
 
   // For demo, just duplicating mock data or filtering it
   let displayedProperties = [...featuredProperties, ...featuredProperties];
+  
   if (typeParam !== 'All') {
     displayedProperties = displayedProperties.filter(p => p.type === typeParam);
+  }
+
+  if (catParam !== 'All') {
+    const term = catParam.toLowerCase();
+    displayedProperties = displayedProperties.filter(p => {
+      const typeLow = p.type.toLowerCase();
+      const titleLow = p.title.toLowerCase();
+      if (term === 'commercial') return typeLow === 'commercial';
+      if (term === 'apartments') return titleLow.includes('apartment');
+      if (term === 'villas') return titleLow.includes('villa');
+      if (term === 'plots') return titleLow.includes('plot') || titleLow.includes('land');
+      return typeLow.includes(term) || titleLow.includes(term);
+    });
+  }
+
+  // Determine the title to display
+  let pageTitle = typeParam === 'All' ? 'Sale & Rent' : typeParam;
+  if (catParam !== 'All') {
+    pageTitle = catParam.charAt(0).toUpperCase() + catParam.slice(1);
+    // Add spaces for camelCase/snake_case if any, though our mock cats are single words mostly
   }
 
   return (
@@ -25,7 +47,7 @@ const Listings = () => {
       <div className="container">
         <div className="listings-header">
           <div>
-            <h1 className="font-serif">Properties for {typeParam === 'All' ? 'Sale & Rent' : typeParam}</h1>
+            <h1 className="font-serif">Properties for {pageTitle}</h1>
             <p className="text-muted">Showing {displayedProperties.length} results</p>
           </div>
           
@@ -95,8 +117,8 @@ const Listings = () => {
               <h4>Price Range</h4>
               <input type="range" className="price-slider" min="0" max="10000000" />
               <div className="price-labels">
-                <span>$0</span>
-                <span>$10M+</span>
+                <span>₹0</span>
+                <span>₹10M+</span>
               </div>
             </div>
             

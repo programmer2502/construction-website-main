@@ -46,10 +46,10 @@ const Home = () => {
                 <label>Price Range</label>
                 <select defaultValue="">
                   <option value="" disabled>Any price</option>
-                  <option value="1">Under $1M</option>
-                  <option value="2">$1M - $3M</option>
-                  <option value="3">$3M - $5M</option>
-                  <option value="4">$5M+</option>
+                  <option value="1">Under ₹1M</option>
+                  <option value="2">₹1M - ₹3M</option>
+                  <option value="3">₹3M - ₹5M</option>
+                  <option value="4">₹5M+</option>
                 </select>
               </div>
               <button type="submit" className="btn btn-primary search-submit">

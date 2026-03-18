@@ -33,7 +33,7 @@ const Header = () => {
           <Building2 className="logo-icon" />
           <span className="logo-text">PropVista</span>
         </Link>
-        
+
         <nav className={`nav-links ${isMobileMenuOpen ? 'nav-open' : ''}`}>
           <Link to="/" className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}>Home</Link>
           <Link to="/listings?type=Buy" className={`nav-link ${location.pathname.includes('/listings') ? 'active' : ''}`}>Buy</Link>
@@ -42,7 +42,7 @@ const Header = () => {
           <Link to="/agents" className={`nav-link ${location.pathname === '/agents' ? 'active' : ''}`}>Agents</Link>
           <Link to="/about" className={`nav-link ${location.pathname === '/about' ? 'active' : ''}`}>About</Link>
           <Link to="/contact" className={`nav-link ${location.pathname === '/contact' ? 'active' : ''}`}>Contact</Link>
-          
+
           <div className="nav-actions-mobile">
             <button onClick={toggleTheme} className="theme-toggle" aria-label="Toggle Dark Mode">
               {isDark ? <Sun size={20} /> : <Moon size={20} />}
@@ -50,16 +50,16 @@ const Header = () => {
             <Link to="/contact" className="btn btn-primary btn-sm">List Your Property</Link>
           </div>
         </nav>
-        
+
         <div className="nav-actions-desktop">
           <button onClick={toggleTheme} className="theme-toggle" aria-label="Toggle Dark Mode">
             {isDark ? <Sun size={20} /> : <Moon size={20} />}
           </button>
           <Link to="/contact" className="btn btn-primary btn-sm">List Your Property</Link>
         </div>
-        
-        <button 
-          className="mobile-menu-toggle" 
+
+        <button
+          className="mobile-menu-toggle"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label="Toggle Menu"
         >

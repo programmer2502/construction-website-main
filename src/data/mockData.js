@@ -3,7 +3,7 @@ export const featuredProperties = [
   {
     id: 'prop-1',
     title: 'Modern Penthouse with City Views',
-    price: '$2,450,000',
+    price: '₹24,50,000',
     location: '124 Luxury Ave, New York',
     beds: 4,
     baths: 3.5,
@@ -14,7 +14,7 @@ export const featuredProperties = [
   {
     id: 'prop-2',
     title: 'Luxury Villa in Beverly Hills',
-    price: '$8,900,000',
+    price: '₹89,00,000',
     location: '90210 Beverly Hills, CA',
     beds: 6,
     baths: 7,
@@ -25,7 +25,7 @@ export const featuredProperties = [
   {
     id: 'prop-3',
     title: 'Downtown Loft Apartment',
-    price: '$4,500 / mo',
+    price: '₹4,500 / mo',
     location: 'Downtown Core, Seattle',
     beds: 2,
     baths: 2,
@@ -36,7 +36,7 @@ export const featuredProperties = [
   {
     id: 'prop-4',
     title: 'Prime Commercial Space',
-    price: '$12,000 / mo',
+    price: '₹12,000 / mo',
     location: 'Financial District, Chicago',
     beds: 0,
     baths: 4,

@@ -26,13 +26,13 @@ const EmiCalculator = ({ defaultPrice = 1000000 }) => {
     <div className="emi-calculator widget-card">
       <h4 className="widget-title">EMI Calculator</h4>
       <div className="emi-result">
-        <span className="emi-amount">${emi.toLocaleString()}</span>
+        <span className="emi-amount">₹{emi.toLocaleString('en-IN')}</span>
         <span className="emi-duration">/ month</span>
       </div>
       
       <div className="emi-inputs">
         <div className="form-group">
-          <label>Loan Amount ($)</label>
+          <label>Loan Amount (₹)</label>
           <input 
             type="number" 
             value={loanAmount} 
