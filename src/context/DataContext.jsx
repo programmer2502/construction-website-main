@@ -31,79 +31,62 @@ const DataContext = createContext();
 export const useData = () => useContext(DataContext);
 
 export const DataProvider = ({ children }) => {
-  const [properties, setProperties] = useState(() => {
-    const saved = localStorage.getItem('siteProperties');
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        return parsed.map(p => ({
-          ...p,
-          price: typeof p.price === 'string' ? p.price.replace(/\$/g, '₹') : p.price
-        }));
-      } catch (e) {
-        return initialProperties;
-      }
-    }
-    return initialProperties;
-  });
+  const [properties, setProperties] = useState(initialProperties);
+  const [agents, setAgents] = useState(initialAgents);
+  const [testimonials, setTestimonials] = useState(initialTestimonials);
+  const [categories, setCategories] = useState(initialCategories);
+  const [hero, setHero] = useState(initialHero);
+  const [locations, setLocations] = useState(initialLocations);
+  const [propertyTypes, setPropertyTypes] = useState(initialPropertyTypes);
+  
+  const [isInitialized, setIsInitialized] = useState(false);
 
-  const [agents, setAgents] = useState(() => {
-    const saved = localStorage.getItem('siteAgents');
-    return saved ? JSON.parse(saved) : initialAgents;
-  });
-
-  const [testimonials, setTestimonials] = useState(() => {
-    const saved = localStorage.getItem('siteTestimonials');
-    return saved ? JSON.parse(saved) : initialTestimonials;
-  });
-
-  const [categories, setCategories] = useState(() => {
-    const saved = localStorage.getItem('siteCategories');
-    return saved ? JSON.parse(saved) : initialCategories;
-  });
-
-  const [hero, setHero] = useState(() => {
-    const saved = localStorage.getItem('siteHero');
-    return saved ? JSON.parse(saved) : initialHero;
-  });
-
-  const [locations, setLocations] = useState(() => {
-    const saved = localStorage.getItem('siteLocations');
-    return saved ? JSON.parse(saved) : initialLocations;
-  });
-
-  const [propertyTypes, setPropertyTypes] = useState(() => {
-    const saved = localStorage.getItem('sitePropertyTypes');
-    return saved ? JSON.parse(saved) : initialPropertyTypes;
-  });
-
+  // Fetch from DB on mount
   useEffect(() => {
+    fetch('http://localhost:5000/api/data')
+      .then(res => res.json())
+      .then(data => {
+        if (data && !data.error) {
+          if (data.properties?.length) setProperties(data.properties);
+          if (data.agents?.length) setAgents(data.agents);
+          if (data.testimonials?.length) setTestimonials(data.testimonials);
+          if (data.categories?.length) setCategories(data.categories);
+          if (data.hero && Object.keys(data.hero).length > 0) setHero(data.hero);
+          if (data.locations?.length) setLocations(data.locations);
+          if (data.propertyTypes?.length) setPropertyTypes(data.propertyTypes);
+        }
+      })
+      .catch(err => console.error("Error loading data from DB:", err))
+      .finally(() => {
+        setTimeout(() => setIsInitialized(true), 100);
+      });
+  }, []);
+
+  // Save to DB on any data change (debounced)
+  useEffect(() => {
+    if (!isInitialized) return;
+
+    // Optional: save to local storage as fallback/buffer
     localStorage.setItem('siteProperties', JSON.stringify(properties));
-  }, [properties]);
-
-  useEffect(() => {
     localStorage.setItem('siteAgents', JSON.stringify(agents));
-  }, [agents]);
-
-  useEffect(() => {
     localStorage.setItem('siteTestimonials', JSON.stringify(testimonials));
-  }, [testimonials]);
-
-  useEffect(() => {
     localStorage.setItem('siteCategories', JSON.stringify(categories));
-  }, [categories]);
-
-  useEffect(() => {
     localStorage.setItem('siteHero', JSON.stringify(hero));
-  }, [hero]);
-
-  useEffect(() => {
     localStorage.setItem('siteLocations', JSON.stringify(locations));
-  }, [locations]);
-
-  useEffect(() => {
     localStorage.setItem('sitePropertyTypes', JSON.stringify(propertyTypes));
-  }, [propertyTypes]);
+
+    const timeoutId = setTimeout(() => {
+      fetch('http://localhost:5000/api/data', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          properties, agents, testimonials, categories, hero, locations, propertyTypes
+        })
+      }).catch(err => console.error("Error saving data to DB:", err));
+    }, 1000);
+
+    return () => clearTimeout(timeoutId);
+  }, [properties, agents, testimonials, categories, hero, locations, propertyTypes, isInitialized]);
 
   const value = {
     properties,
@@ -120,8 +103,8 @@ export const DataProvider = ({ children }) => {
     setLocations,
     propertyTypes,
     setPropertyTypes,
-    featuredProperties: properties, // alias for existing uses
-    teamAgents: agents // alias for existing uses
+    featuredProperties: properties,
+    teamAgents: agents
   };
 
   return (

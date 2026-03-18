@@ -33,6 +33,41 @@ const Admin = () => {
   // Form States
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState({});
+  const [uploading, setUploading] = useState(false);
+
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setUploading(true);
+    try {
+      const uploadData = new FormData();
+      uploadData.append("file", file);
+      uploadData.append("fileName", file.name);
+      
+      const privateKey = "private_ytooRsSUoAlXPYlGSDHpjbTrAQ8=";
+      const authHeader = `Basic ${btoa(privateKey + ":")}`;
+      
+      const response = await fetch("https://upload.imagekit.io/api/v1/files/upload", {
+        method: "POST",
+        body: uploadData,
+        headers: {
+          Authorization: authHeader,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Upload failed");
+      }
+
+      const data = await response.json();
+      setFormData(prev => ({ ...prev, image: data.url }));
+    } catch (error) {
+      console.error("Upload error", error);
+      alert("Image upload failed.");
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const startEdit = (item) => {
     setEditingId(item.id);
@@ -219,7 +254,11 @@ const Admin = () => {
                 </div>
                 <div className="admin-form-group">
                   <label>Image URL</label>
-                  <input className="admin-input" name="image" value={formData.image || ''} onChange={handleInputChange} required placeholder="https://..." />
+                  <div style={{ display: 'flex', gap: '10px' }}>
+                    <input className="admin-input" style={{ flex: 1 }} name="image" value={formData.image || ''} onChange={handleInputChange} required placeholder="https://..." />
+                    <input type="file" accept="image/*" onChange={handleFileUpload} disabled={uploading} style={{ padding: '0.4rem', background: 'rgba(255,255,255,0.1)', borderRadius: '8px', color: 'white', maxWidth: '250px' }} />
+                  </div>
+                  {uploading && <span style={{ fontSize: '0.8rem', color: '#38bdf8', marginTop: '4px', display: 'block' }}>Uploading image to ImageKit...</span>}
                 </div>
               </div>
               <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
@@ -290,7 +329,11 @@ const Admin = () => {
                 </div>
                 <div className="admin-form-group" style={{ gridColumn: '1 / -1' }}>
                   <label>Image URL</label>
-                  <input className="admin-input" name="image" value={formData.image || ''} onChange={handleInputChange} required placeholder="https://..." />
+                  <div style={{ display: 'flex', gap: '10px' }}>
+                    <input className="admin-input" style={{ flex: 1 }} name="image" value={formData.image || ''} onChange={handleInputChange} required placeholder="https://..." />
+                    <input type="file" accept="image/*" onChange={handleFileUpload} disabled={uploading} style={{ padding: '0.4rem', background: 'rgba(255,255,255,0.1)', borderRadius: '8px', color: 'white', maxWidth: '250px' }} />
+                  </div>
+                  {uploading && <span style={{ fontSize: '0.8rem', color: '#38bdf8', marginTop: '4px', display: 'block' }}>Uploading image to ImageKit...</span>}
                 </div>
               </div>
               <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
@@ -349,7 +392,11 @@ const Admin = () => {
                 </div>
                 <div className="admin-form-group" style={{ gridColumn: '1 / -1' }}>
                   <label>Image URL</label>
-                  <input className="admin-input" name="image" value={formData.image || ''} onChange={handleInputChange} required placeholder="https://..." />
+                  <div style={{ display: 'flex', gap: '10px' }}>
+                    <input className="admin-input" style={{ flex: 1 }} name="image" value={formData.image || ''} onChange={handleInputChange} required placeholder="https://..." />
+                    <input type="file" accept="image/*" onChange={handleFileUpload} disabled={uploading} style={{ padding: '0.4rem', background: 'rgba(255,255,255,0.1)', borderRadius: '8px', color: 'white', maxWidth: '250px' }} />
+                  </div>
+                  {uploading && <span style={{ fontSize: '0.8rem', color: '#38bdf8', marginTop: '4px', display: 'block' }}>Uploading image to ImageKit...</span>}
                 </div>
               </div>
               <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
@@ -416,7 +463,11 @@ const Admin = () => {
                 </div>
                 <div className="admin-form-group" style={{ gridColumn: '1 / -1' }}>
                   <label>Image URL</label>
-                  <input className="admin-input" name="image" value={formData.image || ''} onChange={handleInputChange} required placeholder="https://..." />
+                  <div style={{ display: 'flex', gap: '10px' }}>
+                    <input className="admin-input" style={{ flex: 1 }} name="image" value={formData.image || ''} onChange={handleInputChange} required placeholder="https://..." />
+                    <input type="file" accept="image/*" onChange={handleFileUpload} disabled={uploading} style={{ padding: '0.4rem', background: 'rgba(255,255,255,0.1)', borderRadius: '8px', color: 'white', maxWidth: '250px' }} />
+                  </div>
+                  {uploading && <span style={{ fontSize: '0.8rem', color: '#38bdf8', marginTop: '4px', display: 'block' }}>Uploading image to ImageKit...</span>}
                 </div>
               </div>
               <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>

@@ -58,7 +58,7 @@ const Contact = () => {
             </div>
 
             <div className="mt-5" style={{ marginTop: '3rem' }}>
-              <a href="https://wa.me/15551234567" target="_blank" rel="noreferrer" className="btn w-100" style={{ backgroundColor: '#25D366', color: '#fff', width: '100%', display: 'flex', justifyContent: 'center' }}>Chat on WhatsApp</a>
+              <a href="https://wa.me/9880345558" target="_blank" rel="noreferrer" className="btn w-100" style={{ backgroundColor: '#25D366', color: '#fff', width: '100%', display: 'flex', justifyContent: 'center' }}>Chat on WhatsApp</a>
             </div>
           </div>
 
