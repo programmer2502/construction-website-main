@@ -33,7 +33,7 @@ const Contact = () => {
               </div>
               <div>
                 <h5 style={{ marginBottom: '0.25rem' }}>Phone</h5>
-                <p className="text-muted" style={{ margin: 0 }}>+91 9880345558<br />+1 (555) 987-6543</p>
+                <p className="text-muted" style={{ margin: 0 }}>+91 9880345558<br />+91 9880345558</p>
               </div>
             </div>
 
