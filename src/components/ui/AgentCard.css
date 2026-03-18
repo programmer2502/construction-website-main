@@ -1,0 +1,111 @@
+/* src/components/ui/AgentCard.css */
+.agent-card {
+  background-color: var(--color-bg-secondary);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  border: 1px solid var(--color-border);
+  text-align: center;
+  padding: 2rem 1.5rem;
+}
+
+.agent-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+
+.agent-image-wrapper {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin: 0 auto 1.5rem;
+  overflow: hidden;
+  border: 4px solid var(--color-bg);
+  box-shadow: var(--shadow-sm);
+}
+
+.agent-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.agent-name {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.agent-title {
+  color: var(--color-text-light);
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.agent-stats {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.agent-stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-value {
+  font-weight: 700;
+  color: var(--color-text);
+  font-size: 1.1rem;
+}
+
+.stat-label {
+  color: var(--color-text-light);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+.star-icon {
+  color: var(--color-accent);
+}
+
+.agent-contact {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.contact-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: var(--color-bg);
+  color: var(--color-text-light);
+  transition: var(--transition);
+}
+
+.contact-icon:hover {
+  background-color: var(--color-accent);
+  color: #1a1a1a;
+}
+
+.agent-btn {
+  flex-grow: 1;
+}

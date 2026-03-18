@@ -1,0 +1,85 @@
+/* src/components/features/AiBanner.css */
+.ai-banner {
+  background: linear-gradient(135deg, var(--color-accent) 0%, #e3c161 100%);
+  padding: 1.5rem 0;
+  color: #1a1a1a;
+  border-radius: var(--radius-md);
+  margin: 3rem 0;
+}
+
+.ai-banner-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.ai-banner-content {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex: 1;
+  min-width: 300px;
+}
+
+.ai-icon-wrapper {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ai-text h3 {
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  margin-bottom: 0.25rem;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.ai-text p {
+  color: rgba(26, 26, 26, 0.7);
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.ai-search-form {
+  display: flex;
+  flex: 1;
+  min-width: 300px;
+  background-color: #fff;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.ai-search-form input {
+  flex-grow: 1;
+  border: none;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  outline: none;
+  color: #1a1a1a;
+}
+
+.ai-search-form button {
+  background-color: #1a1a1a;
+  color: #fff;
+  padding: 0 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.ai-search-form button:hover {
+  background-color: #333;
+}

@@ -1,0 +1,74 @@
+/* src/components/features/EmiCalculator.css */
+.widget-card {
+  background-color: var(--color-bg-secondary);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 2rem;
+}
+
+.widget-title {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.emi-result {
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.emi-amount {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.dark .emi-amount {
+  color: #fff;
+}
+
+.emi-duration {
+  color: var(--color-text-light);
+  font-weight: 500;
+}
+
+.emi-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-light);
+}
+
+.widget-input {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  outline: none;
+  transition: border-color var(--transition);
+}
+
+.widget-input:focus {
+  border-color: var(--color-accent);
+}
