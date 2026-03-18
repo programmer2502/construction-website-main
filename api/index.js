@@ -26,14 +26,14 @@ const AppDataSchema = new mongoose.Schema({
   propertyTypes: Array
 }, { timestamps: true });
 
-const AppData = mongoose.model('AppData', AppDataSchema);
+// Check if model exists to avoid OverwriteModelError in serverless environments
+const AppData = mongoose.models.AppData || mongoose.model('AppData', AppDataSchema);
 
 // GET /api/data - Fetch all application data
 app.get('/api/data', async (req, res) => {
   try {
     let data = await AppData.findOne();
     if (!data) {
-      // Return empty or default data if no doc exists
       data = new AppData({
         properties: [], agents: [], testimonials: [], categories: [], hero: {}, locations: [], propertyTypes: []
       });
@@ -73,7 +73,12 @@ app.post('/api/data', async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== 'production') {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+// Export the Express API for Vercel
+export default app;

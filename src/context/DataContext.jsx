@@ -43,7 +43,7 @@ export const DataProvider = ({ children }) => {
 
   // Fetch from DB on mount
   useEffect(() => {
-    fetch('http://localhost:5000/api/data')
+    fetch('/api/data')
       .then(res => res.json())
       .then(data => {
         if (data && !data.error) {
@@ -76,7 +76,7 @@ export const DataProvider = ({ children }) => {
     localStorage.setItem('sitePropertyTypes', JSON.stringify(propertyTypes));
 
     const timeoutId = setTimeout(() => {
-      fetch('http://localhost:5000/api/data', {
+      fetch('/api/data', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
