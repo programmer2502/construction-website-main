@@ -23,7 +23,7 @@ const Footer = () => {
               <a href="#" aria-label="LinkedIn"><Linkedin size={20} /></a>
             </div>
           </div>
-          
+
           <div className="footer-links-group">
             <h4 className="footer-title">Company</h4>
             <ul className="footer-links">
@@ -33,7 +33,7 @@ const Footer = () => {
               <li><Link to="/contact">Contact</Link></li>
             </ul>
           </div>
-          
+
           <div className="footer-links-group">
             <h4 className="footer-title">Properties</h4>
             <ul className="footer-links">
@@ -43,7 +43,7 @@ const Footer = () => {
               <li><Link to="#">List Your Property</Link></li>
             </ul>
           </div>
-          
+
           <div className="footer-newsletter">
             <h4 className="footer-title">Newsletter</h4>
             <p className="footer-newsletter-desc">Get new listings delivered to your inbox.</p>
@@ -55,12 +55,12 @@ const Footer = () => {
             </form>
             <div className="footer-contact-info">
               <p><Mail size={16} /> info@propvista.com</p>
-              <p><Phone size={16} /> +1 (555) 123-4567</p>
+              <p><Phone size={16} /> +91 9880345558</p>
               <p><MapPin size={16} /> 123 Luxury Ave, NY 10001</p>
             </div>
           </div>
         </div>
-        
+
         <div className="footer-bottom">
           <p>&copy; {new Date().getFullYear()} PropVista. All rights reserved.</p>
           <div className="footer-legal">
