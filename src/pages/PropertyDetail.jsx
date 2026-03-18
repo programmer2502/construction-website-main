@@ -210,7 +210,7 @@ const PropertyDetail = () => {
 
                 <div className="quick-contact">
                   <a href={`tel:${agent.phone}`} className="btn btn-outline w-100 mb-2 mt-2">Call Person</a>
-                  <a href={`https://wa.me/${agent.phone.replace('+', '9880345558')}`} target="_blank" rel="noreferrer" className="btn btn-primary whatsapp-btn w-100">
+                  <a href={`https://wa.me/${agent.phone.replace(/[^0-9]/g, '')}`} target="_blank" rel="noreferrer" className="btn btn-primary whatsapp-btn w-100">
                     WhatsApp
                   </a>
                 </div>

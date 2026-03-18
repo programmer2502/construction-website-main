@@ -53,7 +53,7 @@ export const teamAgents = [
     title: 'Senior Luxury Specialist',
     listings: 42,
     rating: 4.9,
-    phone: '+15551234567',
+    phone: '+919880345558',
     email: 'sarah@propvista.com',
     image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
   },
@@ -63,7 +63,7 @@ export const teamAgents = [
     title: 'Commercial Property Expert',
     listings: 28,
     rating: 4.8,
-    phone: '+15559876543',
+    phone: '+919880345558',
     email: 'michael@propvista.com',
     image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
   },
@@ -73,7 +73,7 @@ export const teamAgents = [
     title: 'Residential Real Estate Broker',
     listings: 56,
     rating: 5.0,
-    phone: '+15554567890',
+    phone: '+919880345558',
     email: 'elena@propvista.com',
     image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
   }
