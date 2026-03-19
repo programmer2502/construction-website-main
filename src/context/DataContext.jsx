@@ -31,13 +31,22 @@ const DataContext = createContext();
 export const useData = () => useContext(DataContext);
 
 export const DataProvider = ({ children }) => {
-  const [properties, setProperties] = useState(initialProperties);
-  const [agents, setAgents] = useState(initialAgents);
-  const [testimonials, setTestimonials] = useState(initialTestimonials);
-  const [categories, setCategories] = useState(initialCategories);
-  const [hero, setHero] = useState(initialHero);
-  const [locations, setLocations] = useState(initialLocations);
-  const [propertyTypes, setPropertyTypes] = useState(initialPropertyTypes);
+  const loadState = (key, initial) => {
+    try {
+      const item = localStorage.getItem(key);
+      return item ? JSON.parse(item) : initial;
+    } catch {
+      return initial;
+    }
+  };
+
+  const [properties, setProperties] = useState(() => loadState('siteProperties', initialProperties));
+  const [agents, setAgents] = useState(() => loadState('siteAgents', initialAgents));
+  const [testimonials, setTestimonials] = useState(() => loadState('siteTestimonials', initialTestimonials));
+  const [categories, setCategories] = useState(() => loadState('siteCategories', initialCategories));
+  const [hero, setHero] = useState(() => loadState('siteHero', initialHero));
+  const [locations, setLocations] = useState(() => loadState('siteLocations', initialLocations));
+  const [propertyTypes, setPropertyTypes] = useState(() => loadState('sitePropertyTypes', initialPropertyTypes));
   
   const [isInitialized, setIsInitialized] = useState(false);
 
