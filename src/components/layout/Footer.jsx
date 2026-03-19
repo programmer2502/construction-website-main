@@ -56,7 +56,7 @@ const Footer = () => {
             <div className="footer-contact-info">
               <p><Mail size={16} /> info@Land24.com</p>
               <p><Phone size={16} /> +91 9880345558</p>
-              <p><MapPin size={16} /> 123 Luxury Ave, NY 10001</p>
+              <p><MapPin size={16} /> Panathur, Bangalore</p>
             </div>
           </div>
         </div>

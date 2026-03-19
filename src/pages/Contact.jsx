@@ -23,7 +23,7 @@ const Contact = () => {
               </div>
               <div>
                 <h5 style={{ marginBottom: '0.25rem' }}>Our Office</h5>
-                <p className="text-muted" style={{ margin: 0 }}>123 Luxury Ave, Suite 500<br />New York, NY 10001</p>
+                <p className="text-muted" style={{ margin: 0 }}>Panathur, Bangalore<br />New York, NY 10001</p>
               </div>
             </div>
 
