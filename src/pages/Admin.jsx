@@ -29,7 +29,7 @@ const Admin = () => {
     setIsAuthenticated(false);
     localStorage.removeItem('siteAdminAuth');
   };
-  
+
   // Form States
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState({});
@@ -43,10 +43,10 @@ const Admin = () => {
       const uploadData = new FormData();
       uploadData.append("file", file);
       uploadData.append("fileName", file.name);
-      
+
       const privateKey = "private_ytooRsSUoAlXPYlGSDHpjbTrAQ8=";
       const authHeader = `Basic ${btoa(privateKey + ":")}`;
-      
+
       const response = await fetch("https://upload.imagekit.io/api/v1/files/upload", {
         method: "POST",
         body: uploadData,
@@ -97,7 +97,7 @@ const Admin = () => {
   };
 
   const deleteProperty = (id) => {
-    if(window.confirm('Delete this property?')) {
+    if (window.confirm('Delete this property?')) {
       setProperties(properties.filter(p => p.id !== id));
     }
   };
@@ -115,7 +115,7 @@ const Admin = () => {
   };
 
   const deleteAgent = (id) => {
-    if(window.confirm('Delete this agent?')) {
+    if (window.confirm('Delete this agent?')) {
       setAgents(agents.filter(a => a.id !== id));
     }
   };
@@ -133,7 +133,7 @@ const Admin = () => {
   };
 
   const deleteTestimonial = (id) => {
-    if(window.confirm('Delete this testimonial?')) {
+    if (window.confirm('Delete this testimonial?')) {
       setTestimonials(testimonials.filter(t => t.id !== id));
     }
   };
@@ -151,7 +151,7 @@ const Admin = () => {
   };
 
   const deleteCategory = (id) => {
-    if(window.confirm('Delete this category?')) {
+    if (window.confirm('Delete this category?')) {
       setCategories(categories.filter(c => c.id !== id));
     }
   };
@@ -169,7 +169,7 @@ const Admin = () => {
   };
 
   const deleteLocation = (id) => {
-    if(window.confirm('Delete this location?')) {
+    if (window.confirm('Delete this location?')) {
       setLocations(locations.filter(l => l.id !== id));
     }
   };
@@ -187,7 +187,7 @@ const Admin = () => {
   };
 
   const deletePropertyType = (id) => {
-    if(window.confirm('Delete this property type?')) {
+    if (window.confirm('Delete this property type?')) {
       setPropertyTypes(propertyTypes.filter(pt => pt.id !== id));
     }
   };
@@ -209,7 +209,7 @@ const Admin = () => {
               <Plus size={18} /> Add Property
             </button>
           </div>
-          
+
           {editingId && (
             <form onSubmit={saveProperty} style={{ background: 'rgba(0,0,0,0.2)', padding: '1.5rem', borderRadius: '12px', marginBottom: '2rem' }}>
               <h3 style={{ marginBottom: '1rem' }}>{editingId === 'new' ? 'New Property' : 'Edit Property'}</h3>
@@ -274,8 +274,8 @@ const Admin = () => {
                 </div>
               </div>
               <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-                <button type="submit" className="admin-btn admin-btn-primary"><Save size={18}/> Save</button>
-                <button type="button" className="admin-btn admin-btn-danger" onClick={cancelEdit}><X size={18}/> Cancel</button>
+                <button type="submit" className="admin-btn admin-btn-primary"><Save size={18} /> Save</button>
+                <button type="button" className="admin-btn admin-btn-danger" onClick={cancelEdit}><X size={18} /> Cancel</button>
               </div>
             </form>
           )}
@@ -291,8 +291,8 @@ const Admin = () => {
                   </div>
                 </div>
                 <div className="admin-item-actions">
-                  <button className="admin-btn-edit" onClick={() => startEdit(p)}><Edit2 size={16}/></button>
-                  <button className="admin-btn-edit admin-btn-danger" onClick={() => deleteProperty(p.id)}><Trash2 size={16} color="currentColor"/></button>
+                  <button className="admin-btn-edit" onClick={() => startEdit(p)}><Edit2 size={16} /></button>
+                  <button className="admin-btn-edit admin-btn-danger" onClick={() => deleteProperty(p.id)}><Trash2 size={16} color="currentColor" /></button>
                 </div>
               </div>
             ))}
@@ -310,7 +310,7 @@ const Admin = () => {
               <Plus size={18} /> Add Agent
             </button>
           </div>
-          
+
           {editingId && (
             <form onSubmit={saveAgent} style={{ background: 'rgba(0,0,0,0.2)', padding: '1.5rem', borderRadius: '12px', marginBottom: '2rem' }}>
               <h3 style={{ marginBottom: '1rem' }}>{editingId === 'new' ? 'New Agent' : 'Edit Agent'}</h3>
@@ -349,8 +349,8 @@ const Admin = () => {
                 </div>
               </div>
               <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-                <button type="submit" className="admin-btn admin-btn-primary"><Save size={18}/> Save</button>
-                <button type="button" className="admin-btn admin-btn-danger" onClick={cancelEdit}><X size={18}/> Cancel</button>
+                <button type="submit" className="admin-btn admin-btn-primary"><Save size={18} /> Save</button>
+                <button type="button" className="admin-btn admin-btn-danger" onClick={cancelEdit}><X size={18} /> Cancel</button>
               </div>
             </form>
           )}
@@ -366,8 +366,8 @@ const Admin = () => {
                   </div>
                 </div>
                 <div className="admin-item-actions">
-                  <button className="admin-btn-edit" onClick={() => startEdit(a)}><Edit2 size={16}/></button>
-                  <button className="admin-btn-edit admin-btn-danger" onClick={() => deleteAgent(a.id)}><Trash2 size={16} color="currentColor"/></button>
+                  <button className="admin-btn-edit" onClick={() => startEdit(a)}><Edit2 size={16} /></button>
+                  <button className="admin-btn-edit admin-btn-danger" onClick={() => deleteAgent(a.id)}><Trash2 size={16} color="currentColor" /></button>
                 </div>
               </div>
             ))}
@@ -385,7 +385,7 @@ const Admin = () => {
               <Plus size={18} /> Add Testimonial
             </button>
           </div>
-          
+
           {editingId && (
             <form onSubmit={saveTestimonial} style={{ background: 'rgba(0,0,0,0.2)', padding: '1.5rem', borderRadius: '12px', marginBottom: '2rem' }}>
               <h3 style={{ marginBottom: '1rem' }}>{editingId === 'new' ? 'New Testimonial' : 'Edit Testimonial'}</h3>
@@ -412,8 +412,8 @@ const Admin = () => {
                 </div>
               </div>
               <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-                <button type="submit" className="admin-btn admin-btn-primary"><Save size={18}/> Save</button>
-                <button type="button" className="admin-btn admin-btn-danger" onClick={cancelEdit}><X size={18}/> Cancel</button>
+                <button type="submit" className="admin-btn admin-btn-primary"><Save size={18} /> Save</button>
+                <button type="button" className="admin-btn admin-btn-danger" onClick={cancelEdit}><X size={18} /> Cancel</button>
               </div>
             </form>
           )}
@@ -424,13 +424,13 @@ const Admin = () => {
                 <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                   {t.image && <img src={t.image} alt={t.name} style={{ width: '50px', height: '50px', borderRadius: '50%', objectFit: 'cover' }} />}
                   <div className="admin-item-content">
-                    <h4>{t.name} - <span style={{fontSize: '0.85rem', fontWeight:'normal', color: '#94a3b8'}}>{t.role}</span></h4>
+                    <h4>{t.name} - <span style={{ fontSize: '0.85rem', fontWeight: 'normal', color: '#94a3b8' }}>{t.role}</span></h4>
                     <p style={{ maxWidth: '600px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>"{t.quote}"</p>
                   </div>
                 </div>
                 <div className="admin-item-actions">
-                  <button className="admin-btn-edit" onClick={() => startEdit(t)}><Edit2 size={16}/></button>
-                  <button className="admin-btn-edit admin-btn-danger" onClick={() => deleteTestimonial(t.id)}><Trash2 size={16} color="currentColor"/></button>
+                  <button className="admin-btn-edit" onClick={() => startEdit(t)}><Edit2 size={16} /></button>
+                  <button className="admin-btn-edit admin-btn-danger" onClick={() => deleteTestimonial(t.id)}><Trash2 size={16} color="currentColor" /></button>
                 </div>
               </div>
             ))}
@@ -448,7 +448,7 @@ const Admin = () => {
               <Plus size={18} /> Add Category
             </button>
           </div>
-          
+
           {editingId && (
             <form onSubmit={saveCategory} style={{ background: 'rgba(0,0,0,0.2)', padding: '1.5rem', borderRadius: '12px', marginBottom: '2rem' }}>
               <h3 style={{ marginBottom: '1rem' }}>{editingId === 'new' ? 'New Category' : 'Edit Category'}</h3>
@@ -483,8 +483,8 @@ const Admin = () => {
                 </div>
               </div>
               <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-                <button type="submit" className="admin-btn admin-btn-primary"><Save size={18}/> Save</button>
-                <button type="button" className="admin-btn admin-btn-danger" onClick={cancelEdit}><X size={18}/> Cancel</button>
+                <button type="submit" className="admin-btn admin-btn-primary"><Save size={18} /> Save</button>
+                <button type="button" className="admin-btn admin-btn-danger" onClick={cancelEdit}><X size={18} /> Cancel</button>
               </div>
             </form>
           )}
@@ -495,13 +495,13 @@ const Admin = () => {
                 <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                   {c.image && <img src={c.image} alt={c.title} style={{ width: '60px', height: '60px', borderRadius: '8px', objectFit: 'cover' }} />}
                   <div className="admin-item-content">
-                    <h4>{c.title} - <span style={{fontSize: '0.85rem', fontWeight:'normal', color: '#94a3b8'}}>{c.className === 'tall-tile' ? 'Tall' : c.className === 'wide-tile' ? 'Wide' : 'Standard'}</span></h4>
+                    <h4>{c.title} - <span style={{ fontSize: '0.85rem', fontWeight: 'normal', color: '#94a3b8' }}>{c.className === 'tall-tile' ? 'Tall' : c.className === 'wide-tile' ? 'Wide' : 'Standard'}</span></h4>
                     <p>{c.count} • {c.link}</p>
                   </div>
                 </div>
                 <div className="admin-item-actions">
-                  <button className="admin-btn-edit" onClick={() => startEdit(c)}><Edit2 size={16}/></button>
-                  <button className="admin-btn-edit admin-btn-danger" onClick={() => deleteCategory(c.id)}><Trash2 size={16} color="currentColor"/></button>
+                  <button className="admin-btn-edit" onClick={() => startEdit(c)}><Edit2 size={16} /></button>
+                  <button className="admin-btn-edit admin-btn-danger" onClick={() => deleteCategory(c.id)}><Trash2 size={16} color="currentColor" /></button>
                 </div>
               </div>
             ))}
@@ -519,7 +519,7 @@ const Admin = () => {
               <Plus size={18} /> Add Location
             </button>
           </div>
-          
+
           {editingId && (
             <form onSubmit={saveLocation} style={{ background: 'rgba(0,0,0,0.2)', padding: '1.5rem', borderRadius: '12px', marginBottom: '2rem' }}>
               <h3 style={{ marginBottom: '1rem' }}>{editingId === 'new' ? 'New Location' : 'Edit Location'}</h3>
@@ -528,8 +528,8 @@ const Admin = () => {
                 <input className="admin-input" name="name" value={formData.name || ''} onChange={handleInputChange} required />
               </div>
               <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-                <button type="submit" className="admin-btn admin-btn-primary"><Save size={18}/> Save</button>
-                <button type="button" className="admin-btn admin-btn-danger" onClick={cancelEdit}><X size={18}/> Cancel</button>
+                <button type="submit" className="admin-btn admin-btn-primary"><Save size={18} /> Save</button>
+                <button type="button" className="admin-btn admin-btn-danger" onClick={cancelEdit}><X size={18} /> Cancel</button>
               </div>
             </form>
           )}
@@ -543,8 +543,8 @@ const Admin = () => {
                   </div>
                 </div>
                 <div className="admin-item-actions">
-                  <button className="admin-btn-edit" onClick={() => startEdit(l)}><Edit2 size={16}/></button>
-                  <button className="admin-btn-edit admin-btn-danger" onClick={() => deleteLocation(l.id)}><Trash2 size={16} color="currentColor"/></button>
+                  <button className="admin-btn-edit" onClick={() => startEdit(l)}><Edit2 size={16} /></button>
+                  <button className="admin-btn-edit admin-btn-danger" onClick={() => deleteLocation(l.id)}><Trash2 size={16} color="currentColor" /></button>
                 </div>
               </div>
             ))}
@@ -562,7 +562,7 @@ const Admin = () => {
               <Plus size={18} /> Add Property Type
             </button>
           </div>
-          
+
           {editingId && (
             <form onSubmit={savePropertyType} style={{ background: 'rgba(0,0,0,0.2)', padding: '1.5rem', borderRadius: '12px', marginBottom: '2rem' }}>
               <h3 style={{ marginBottom: '1rem' }}>{editingId === 'new' ? 'New Property Type' : 'Edit Property Type'}</h3>
@@ -571,8 +571,8 @@ const Admin = () => {
                 <input className="admin-input" name="name" value={formData.name || ''} onChange={handleInputChange} required />
               </div>
               <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-                <button type="submit" className="admin-btn admin-btn-primary"><Save size={18}/> Save</button>
-                <button type="button" className="admin-btn admin-btn-danger" onClick={cancelEdit}><X size={18}/> Cancel</button>
+                <button type="submit" className="admin-btn admin-btn-primary"><Save size={18} /> Save</button>
+                <button type="button" className="admin-btn admin-btn-danger" onClick={cancelEdit}><X size={18} /> Cancel</button>
               </div>
             </form>
           )}
@@ -586,8 +586,8 @@ const Admin = () => {
                   </div>
                 </div>
                 <div className="admin-item-actions">
-                  <button className="admin-btn-edit" onClick={() => startEdit(pt)}><Edit2 size={16}/></button>
-                  <button className="admin-btn-edit admin-btn-danger" onClick={() => deletePropertyType(pt.id)}><Trash2 size={16} color="currentColor"/></button>
+                  <button className="admin-btn-edit" onClick={() => startEdit(pt)}><Edit2 size={16} /></button>
+                  <button className="admin-btn-edit admin-btn-danger" onClick={() => deletePropertyType(pt.id)}><Trash2 size={16} color="currentColor" /></button>
                 </div>
               </div>
             ))}
@@ -602,31 +602,31 @@ const Admin = () => {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
             <h2>Manage Hero Section</h2>
           </div>
-          
+
           <form onSubmit={saveHero} style={{ background: 'rgba(0,0,0,0.2)', padding: '1.5rem', borderRadius: '12px', marginBottom: '2rem' }}>
             <div className="admin-form-group">
               <label>Hero Title</label>
-              <input 
-                className="admin-input" 
-                name="title" 
-                value={formData.title !== undefined ? formData.title : hero.title} 
-                onChange={handleInputChange} 
-                required 
+              <input
+                className="admin-input"
+                name="title"
+                value={formData.title !== undefined ? formData.title : hero.title}
+                onChange={handleInputChange}
+                required
               />
             </div>
             <div className="admin-form-group">
               <label>Hero Subtitle</label>
-              <textarea 
-                className="admin-input" 
-                name="subtitle" 
-                value={formData.subtitle !== undefined ? formData.subtitle : hero.subtitle} 
-                onChange={handleInputChange} 
-                required 
+              <textarea
+                className="admin-input"
+                name="subtitle"
+                value={formData.subtitle !== undefined ? formData.subtitle : hero.subtitle}
+                onChange={handleInputChange}
+                required
                 rows="3"
               />
             </div>
             <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-              <button type="submit" className="admin-btn admin-btn-primary"><Save size={18}/> Save Changes</button>
+              <button type="submit" className="admin-btn admin-btn-primary"><Save size={18} /> Save Changes</button>
             </div>
           </form>
         </div>
@@ -645,22 +645,22 @@ const Admin = () => {
             <form onSubmit={handleLogin}>
               <div className="admin-form-group" style={{ textAlign: 'left' }}>
                 <label>Username</label>
-                <input 
-                  type="text" 
-                  className="admin-input" 
+                <input
+                  type="text"
+                  className="admin-input"
                   value={loginForm.username}
-                  onChange={(e) => setLoginForm({...loginForm, username: e.target.value})}
-                  required 
+                  onChange={(e) => setLoginForm({ ...loginForm, username: e.target.value })}
+                  required
                 />
               </div>
               <div className="admin-form-group" style={{ textAlign: 'left' }}>
                 <label>Password</label>
-                <input 
-                  type="password" 
-                  className="admin-input" 
+                <input
+                  type="password"
+                  className="admin-input"
                   value={loginForm.password}
-                  onChange={(e) => setLoginForm({...loginForm, password: e.target.value})}
-                  required 
+                  onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
+                  required
                 />
               </div>
               <button type="submit" className="admin-btn admin-btn-primary w-100 mt-2" style={{ justifyContent: 'center' }}>
@@ -671,55 +671,55 @@ const Admin = () => {
         ) : (
           <>
             <div className="admin-header" style={{ position: 'relative' }}>
-              <h1>PropVista Admin Console</h1>
+              <h1>Land24 Admin Console</h1>
               <p style={{ color: '#94a3b8' }}>Manage your website content in real-time.</p>
-              <button 
-                onClick={handleLogout} 
-                className="admin-btn admin-btn-danger" 
+              <button
+                onClick={handleLogout}
+                className="admin-btn admin-btn-danger"
                 style={{ position: 'absolute', top: '0', right: '0' }}
               >
                 <LogOut size={18} /> Logout
               </button>
             </div>
-            
+
             <div className="admin-tabs">
-              <button 
+              <button
                 className={`admin-tab ${activeTab === 'properties' ? 'active' : ''}`}
                 onClick={() => { setActiveTab('properties'); cancelEdit(); }}
               >
                 Properties (Villas/Buy/Rent)
               </button>
-              <button 
+              <button
                 className={`admin-tab ${activeTab === 'agents' ? 'active' : ''}`}
                 onClick={() => { setActiveTab('agents'); cancelEdit(); }}
               >
                 Agents
               </button>
-              <button 
+              <button
                 className={`admin-tab ${activeTab === 'testimonials' ? 'active' : ''}`}
                 onClick={() => { setActiveTab('testimonials'); cancelEdit(); }}
               >
                 Testimonials
               </button>
-              <button 
+              <button
                 className={`admin-tab ${activeTab === 'locations' ? 'active' : ''}`}
                 onClick={() => { setActiveTab('locations'); cancelEdit(); }}
               >
                 Locations
               </button>
-              <button 
+              <button
                 className={`admin-tab ${activeTab === 'property-types' ? 'active' : ''}`}
                 onClick={() => { setActiveTab('property-types'); cancelEdit(); }}
               >
                 Property Types
               </button>
-              <button 
+              <button
                 className={`admin-tab ${activeTab === 'categories' ? 'active' : ''}`}
                 onClick={() => { setActiveTab('categories'); cancelEdit(); }}
               >
                 Categories
               </button>
-              <button 
+              <button
                 className={`admin-tab ${activeTab === 'hero' ? 'active' : ''}`}
                 onClick={() => { setActiveTab('hero'); setFormData(hero); }}
               >

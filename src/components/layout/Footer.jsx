@@ -11,7 +11,7 @@ const Footer = () => {
           <div className="footer-brand">
             <Link to="/" className="logo footer-logo">
               <Building2 className="logo-icon" />
-              <span className="logo-text">PropVista</span>
+              <span className="logo-text">Land24</span>
             </Link>
             <p className="footer-desc">
               Discover properties that define your lifestyle. We provide a premium real estate experience with transparent pricing and expert guidance.
@@ -54,7 +54,7 @@ const Footer = () => {
               </button>
             </form>
             <div className="footer-contact-info">
-              <p><Mail size={16} /> info@propvista.com</p>
+              <p><Mail size={16} /> info@Land24.com</p>
               <p><Phone size={16} /> +91 9880345558</p>
               <p><MapPin size={16} /> 123 Luxury Ave, NY 10001</p>
             </div>
@@ -62,7 +62,7 @@ const Footer = () => {
         </div>
 
         <div className="footer-bottom">
-          <p>&copy; {new Date().getFullYear()} PropVista. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Land24. All rights reserved.</p>
           <div className="footer-legal">
             <Link to="#">Privacy Policy</Link>
             <Link to="#">Terms of Service</Link>

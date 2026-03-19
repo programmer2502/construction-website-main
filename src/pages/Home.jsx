@@ -24,7 +24,7 @@ const Home = () => {
         <div className="hero-content container text-center">
           <h1 className="display-1 hero-title">{hero.title}</h1>
           <p className="hero-subtitle">{hero.subtitle}</p>
-          
+
           <div className="search-bar-wrapper">
             <form className="search-bar" onSubmit={handleSearch}>
               <div className="search-input-group">
@@ -77,7 +77,7 @@ const Home = () => {
             </div>
             <Link to="/listings" className="btn btn-outline">View All Listings</Link>
           </div>
-          
+
           <div className="property-grid">
             {featuredProperties.map(prop => (
               <PropertyCard key={prop.id} property={prop} />
@@ -86,14 +86,14 @@ const Home = () => {
         </div>
       </section>
 
-      {/* WHY PROPVISTA */}
+      {/* WHY Land24 */}
       <section className="section bg-primary">
         <div className="container">
           <div className="text-center mb-4">
-            <h2 className="display-2 font-serif">Why PropVista?</h2>
+            <h2 className="display-2 font-serif">Why Land24?</h2>
             <p>Elevating the real estate experience through technology and expertise.</p>
           </div>
-          
+
           <div className="features-grid">
             <div className="feature-card">
               <div className="feature-icon-wrapper"><Shield size={32} /></div>
@@ -126,7 +126,7 @@ const Home = () => {
             <h2 className="display-2 font-serif">Browse by Category</h2>
             <p>Find what you're looking for by exploring our curated collections.</p>
           </div>
-          
+
           <div className="categories-grid">
             {categories.map(cat => (
               <Link key={cat.id} to={cat.link} className={`category-tile ${cat.className || ''}`}>
@@ -173,7 +173,7 @@ const Home = () => {
             </div>
             <Link to="/agents" className="btn btn-outline">View All Agents</Link>
           </div>
-          
+
           <div className="agents-grid">
             {teamAgents.map(agent => (
               <AgentCard key={agent.id} agent={agent} />
@@ -181,25 +181,25 @@ const Home = () => {
           </div>
         </div>
       </section>
-      
+
       {/* TESTIMONIALS */}
       <section className="section">
         <div className="container text-center">
           <h2 className="display-2 font-serif mb-4">What Our Clients Say</h2>
           <div className="testimonials-grid">
-             {testimonials.map(t => (
-               <div key={t.id} className="testimonial-card">
-                 <div className="quote-marks">"</div>
-                 <p className="testimonial-quote">{t.quote}</p>
-                 <div className="testimonial-author">
-                   <img src={t.image} alt={t.name} />
-                   <div>
-                     <h4>{t.name}</h4>
-                     <span>{t.role}</span>
-                   </div>
-                 </div>
-               </div>
-             ))}
+            {testimonials.map(t => (
+              <div key={t.id} className="testimonial-card">
+                <div className="quote-marks">"</div>
+                <p className="testimonial-quote">{t.quote}</p>
+                <div className="testimonial-author">
+                  <img src={t.image} alt={t.name} />
+                  <div>
+                    <h4>{t.name}</h4>
+                    <span>{t.role}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>

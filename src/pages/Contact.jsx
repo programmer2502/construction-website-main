@@ -43,7 +43,7 @@ const Contact = () => {
               </div>
               <div>
                 <h5 style={{ marginBottom: '0.25rem' }}>Email</h5>
-                <p className="text-muted" style={{ margin: 0 }}>info@propvista.com<br />support@propvista.com</p>
+                <p className="text-muted" style={{ margin: 0 }}>info@Land24.com<br />support@Land24.com</p>
               </div>
             </div>
 

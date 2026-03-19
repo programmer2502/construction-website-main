@@ -31,7 +31,7 @@ const Header = () => {
       <div className="container header-container">
         <Link to="/" className="logo">
           <Building2 className="logo-icon" />
-          <span className="logo-text">PropVista</span>
+          <span className="logo-text">Land24</span>
         </Link>
 
         <nav className={`nav-links ${isMobileMenuOpen ? 'nav-open' : ''}`}>

@@ -66,7 +66,7 @@ export const teamAgents = [
     listings: 42,
     rating: 4.9,
     phone: '+919880345558',
-    email: 'sarah@propvista.com',
+    email: 'sarah@Land24.com',
     image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
   },
   {
@@ -76,7 +76,7 @@ export const teamAgents = [
     listings: 28,
     rating: 4.8,
     phone: '+919880345558',
-    email: 'michael@propvista.com',
+    email: 'michael@Land24.com',
     image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
   },
   {
@@ -86,7 +86,7 @@ export const teamAgents = [
     listings: 56,
     rating: 5.0,
     phone: '+919880345558',
-    email: 'elena@propvista.com',
+    email: 'elena@Land24.com',
     image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
   }
 ];
@@ -96,14 +96,14 @@ export const testimonials = [
     id: 1,
     name: 'James & Sarah Smith',
     role: 'Homeowners',
-    quote: "PropVista made finding our dream home incredibly easy. Their agents are top-notch and the platform is a joy to use.",
+    quote: "Land24 made finding our dream home incredibly easy. Their agents are top-notch and the platform is a joy to use.",
     image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
   },
   {
     id: 2,
     name: 'David Wright',
     role: 'Property Investor',
-    quote: "As an investor, I rely on accurate data and fast communication. PropVista delivers on both fronts flawlessly.",
+    quote: "As an investor, I rely on accurate data and fast communication. Land24 delivers on both fronts flawlessly.",
     image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
   }
 ];
