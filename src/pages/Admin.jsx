@@ -261,8 +261,8 @@ const Admin = () => {
                   <textarea className="admin-input" name="amenities" value={formData.amenities || ''} onChange={handleInputChange} rows="2" />
                 </div>
                 <div className="admin-form-group">
-                  <label>Map View (Google Maps Iframe)</label>
-                  <input className="admin-input" name="mapView" value={formData.mapView || ''} onChange={handleInputChange} placeholder="<iframe src=... /> or leave empty for auto-map" />
+                  <label>Google Maps Link or Iframe</label>
+                  <input className="admin-input" name="mapView" value={formData.mapView || ''} onChange={handleInputChange} placeholder="e.g. https://maps.app.goo.gl/... or leave empty" />
                 </div>
                 <div className="admin-form-group">
                   <label>Image URL</label>
