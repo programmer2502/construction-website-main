@@ -165,20 +165,20 @@ const PropertyDetail = () => {
               {activeTab === 'map' && (
                 <div className="tab-pane animate-fade-in">
                   <h3>Location Map</h3>
-                  <div className="map-embed">
+                  <div className="map-embed" style={{ borderRadius: '12px', overflow: 'hidden' }}>
                     {property.mapView && property.mapView.startsWith('<iframe') ? (
-                      <div dangerouslySetInnerHTML={{ __html: property.mapView }} className="iframe-container" style={{ width: '100%', height: '400px', borderRadius: '12px', overflow: 'hidden' }} />
+                      <div dangerouslySetInnerHTML={{ __html: property.mapView }} className="iframe-container" style={{ width: '100%', height: '400px' }} />
                     ) : (
-                      <>
-                        <img
-                          src={property.mapView || "https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=800&q=80"}
-                          alt="Map View"
-                          className="fake-map"
-                        />
-                        <div className="map-marker-fake">
-                          <MapPin size={32} />
-                        </div>
-                      </>
+                      <iframe
+                        title="Property Location"
+                        width="100%"
+                        height="400"
+                        style={{ border: 0 }}
+                        loading="lazy"
+                        allowFullScreen
+                        referrerPolicy="no-referrer-when-downgrade"
+                        src={`https://maps.google.com/maps?q=${encodeURIComponent(property.location)}&t=&z=14&ie=UTF8&iwloc=&output=embed`}
+                      ></iframe>
                     )}
                   </div>
                 </div>
