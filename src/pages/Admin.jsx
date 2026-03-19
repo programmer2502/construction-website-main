@@ -463,7 +463,15 @@ const Admin = () => {
                 </div>
                 <div className="admin-form-group">
                   <label>Link Route</label>
-                  <input className="admin-input" name="link" value={formData.link || ''} onChange={handleInputChange} placeholder="e.g. /listings?cat=apartments" required />
+                  <select className="admin-input" name="link" value={formData.link || ''} onChange={handleInputChange} required>
+                    <option value="" disabled>Select Category Type</option>
+                    <option value="/listings">All Properties</option>
+                    {propertyTypes && propertyTypes.map(pt => (
+                      <option key={pt.id} value={`/listings?type=${encodeURIComponent(pt.name)}`}>
+                        Property Type: {pt.name}
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 <div className="admin-form-group">
                   <label>Layout Style (CSS Class)</label>
