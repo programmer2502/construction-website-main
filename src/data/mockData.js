@@ -9,7 +9,10 @@ export const featuredProperties = [
     baths: 3.5,
     area: 3200,
     type: 'Buy',
-    image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
+    image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+    overview: 'Experience the pinnacle of luxury living in this exquisite property located in the heart of the city.',
+    amenities: 'Swimming Pool, Smart Home System, Home Theater, Wine Cellar, Gym / Fitness',
+    mapView: 'https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'prop-2',
@@ -20,7 +23,10 @@ export const featuredProperties = [
     baths: 7,
     area: 8500,
     type: 'Buy',
-    image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
+    image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+    overview: 'A high-end luxury villa boasting modern amenities and stunning views.',
+    amenities: 'Outdoor Kitchen, 3-Car Garage, Ocean View, Smart Home System',
+    mapView: 'https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'prop-3',
@@ -31,7 +37,10 @@ export const featuredProperties = [
     baths: 2,
     area: 1400,
     type: 'Rent',
-    image: 'https://images.unsplash.com/photo-1502672260266-1c1e5250fe0e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
+    image: 'https://images.unsplash.com/photo-1502672260266-1c1e5250fe0e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+    overview: 'Beautiful downtown loft located centrally for urban lifestyle.',
+    amenities: 'Gym / Fitness, Hardwood Floors, High Ceilings',
+    mapView: 'https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'prop-4',
@@ -42,7 +51,10 @@ export const featuredProperties = [
     baths: 4,
     area: 5000,
     type: 'Commercial',
-    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'
+    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+    overview: 'Prime commercial location suitable for retail or business offices.',
+    amenities: 'Parking, Security System, Floor-to-ceiling Windows',
+    mapView: 'https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=800&q=80'
   }
 ];
 

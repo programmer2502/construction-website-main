@@ -253,6 +253,18 @@ const Admin = () => {
                   <input className="admin-input" type="number" name="area" value={formData.area || 0} onChange={handleInputChange} />
                 </div>
                 <div className="admin-form-group">
+                  <label>Overview</label>
+                  <textarea className="admin-input" name="overview" value={formData.overview || ''} onChange={handleInputChange} rows="3" />
+                </div>
+                <div className="admin-form-group">
+                  <label>Amenities (Comma separated)</label>
+                  <textarea className="admin-input" name="amenities" value={formData.amenities || ''} onChange={handleInputChange} rows="2" />
+                </div>
+                <div className="admin-form-group">
+                  <label>Map View (Image URL)</label>
+                  <input className="admin-input" name="mapView" value={formData.mapView || ''} onChange={handleInputChange} />
+                </div>
+                <div className="admin-form-group">
                   <label>Image URL</label>
                   <div style={{ display: 'flex', gap: '10px' }}>
                     <input className="admin-input" style={{ flex: 1 }} name="image" value={formData.image || ''} onChange={handleInputChange} required placeholder="https://..." />

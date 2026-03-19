@@ -20,10 +20,8 @@ const PropertyDetail = () => {
   const property = featuredProperties.find(p => p.id === id) || featuredProperties[0];
   const agent = teamAgents[0]; // Assign random agent
 
-  const amenities = [
-    'Swimming Pool', 'Smart Home System', 'Home Theater', 'Wine Cellar',
-    'Gym / Fitness', 'Outdoor Kitchen', '3-Car Garage', 'Ocean View'
-  ];
+  // Handle dynamic amenities or fallback to empty array
+  const amenitiesList = property.amenities ? property.amenities.split(',').map(a => a.trim()) : [];
 
   return (
     <div className="property-detail-page animate-fade-in">
@@ -134,9 +132,15 @@ const PropertyDetail = () => {
               {activeTab === 'overview' && (
                 <div className="tab-pane animate-fade-in">
                   <h3>Property Description</h3>
-                  <p>Experience the pinnacle of luxury living in this exquisite property located in the heart of {property.location}. Boasting {property.area} square feet of meticulously designed living space, this home features {property.beds} generously sized bedrooms and {property.baths} spa-like bathrooms.</p>
-                  <p>The open-concept floor plan seamlessly integrates indoor and outdoor living areas, perfect for entertaining guests or enjoying quiet family evenings. High-end finishes throughout include custom cabinetry, premium hardwood flooring, and state-of-the-art smart home integration.</p>
-                  <p>Residents will appreciate the breathtaking city views, the private landscaped garden, and the unparalleled access to top-tier dining, shopping, and entertainment options just steps away.</p>
+                  {property.overview ? (
+                    <p style={{ whiteSpace: 'pre-line' }}>{property.overview}</p>
+                  ) : (
+                    <>
+                      <p>Experience the pinnacle of luxury living in this exquisite property located in the heart of {property.location}. Boasting {property.area} square feet of meticulously designed living space, this home features {property.beds} generously sized bedrooms and {property.baths} spa-like bathrooms.</p>
+                      <p>The open-concept floor plan seamlessly integrates indoor and outdoor living areas, perfect for entertaining guests or enjoying quiet family evenings. High-end finishes throughout include custom cabinetry, premium hardwood flooring, and state-of-the-art smart home integration.</p>
+                      <p>Residents will appreciate the breathtaking city views, the private landscaped garden, and the unparalleled access to top-tier dining, shopping, and entertainment options just steps away.</p>
+                    </>
+                  )}
                 </div>
               )}
 
@@ -144,12 +148,16 @@ const PropertyDetail = () => {
                 <div className="tab-pane animate-fade-in">
                   <h3>Features & Amenities</h3>
                   <div className="amenities-grid">
-                    {amenities.map((item, idx) => (
-                      <div key={idx} className="amenity-item">
-                        <Check size={18} className="text-secondary" color="var(--color-accent)" />
-                        <span>{item}</span>
-                      </div>
-                    ))}
+                    {amenitiesList.length > 0 ? (
+                      amenitiesList.map((item, idx) => (
+                        <div key={idx} className="amenity-item">
+                          <Check size={18} className="text-secondary" color="var(--color-accent)" />
+                          <span>{item}</span>
+                        </div>
+                      ))
+                    ) : (
+                      <p>No amenities listed.</p>
+                    )}
                   </div>
                 </div>
               )}
@@ -158,15 +166,20 @@ const PropertyDetail = () => {
                 <div className="tab-pane animate-fade-in">
                   <h3>Location Map</h3>
                   <div className="map-embed">
-                    {/* Fake Google Maps Embed */}
-                    <img
-                      src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=800&q=80"
-                      alt="Map View"
-                      className="fake-map"
-                    />
-                    <div className="map-marker-fake">
-                      <MapPin size={32} />
-                    </div>
+                    {property.mapView && property.mapView.startsWith('<iframe') ? (
+                      <div dangerouslySetInnerHTML={{ __html: property.mapView }} className="iframe-container" style={{ width: '100%', height: '400px', borderRadius: '12px', overflow: 'hidden' }} />
+                    ) : (
+                      <>
+                        <img
+                          src={property.mapView || "https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=800&q=80"}
+                          alt="Map View"
+                          className="fake-map"
+                        />
+                        <div className="map-marker-fake">
+                          <MapPin size={32} />
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
               )}
@@ -203,6 +216,12 @@ const PropertyDetail = () => {
                   <input type="text" placeholder="Your Name" className="widget-input" required />
                   <input type="email" placeholder="Your Email" className="widget-input" required />
                   <input type="tel" placeholder="Your Phone" className="widget-input" required />
+                  <select className="widget-input" required defaultValue="">
+                    <option value="" disabled>Select Language</option>
+                    <option value="English">English</option>
+                    <option value="Kannada">Kannada</option>
+                    <option value="Telugu">Telugu</option>
+                  </select>
                   <textarea placeholder="I'm interested in this property..." className="widget-input" rows="3" required></textarea>
 
                   <Button type="submit" className="w-100 mt-2">Send Message</Button>
