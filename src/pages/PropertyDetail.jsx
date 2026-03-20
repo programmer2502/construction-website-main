@@ -314,7 +314,8 @@ const PropertyDetail = () => {
                     <option value="" disabled>Select Language</option>
                     <option value="English">English</option>
                     <option value="Kannada">Kannada</option>
-                    <option value="Telugu">Telugu</option>
+                    <option value="Tamil">Tamil</option>
+                    <option value="Hindi">Hindi</option>
                   </select>
                   <textarea placeholder="I'm interested in this property..." className="widget-input" rows="3" required></textarea>
 
