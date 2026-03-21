@@ -26,6 +26,27 @@ const initialPropertyTypes = [
   { id: 'pt-3', name: 'Commercial' }
 ];
 
+const initialSiteStats = {
+  listings: '10,000+',
+  clients: '5,000+',
+  cities: '200+',
+  satisfaction: '98%'
+};
+
+const initialCompanyInfo = {
+  whatsapp: '9880345558',
+  phone: '+91 9880345558',
+  email: 'info@Land24.com',
+  address: 'Panathur, Bangalore 560087'
+};
+
+const initialPriceRanges = [
+  { id: 'pr-1', label: 'Under ₹1M', value: '1' },
+  { id: 'pr-2', label: '₹1M - ₹3M', value: '2' },
+  { id: 'pr-3', label: '₹3M - ₹5M', value: '3' },
+  { id: 'pr-4', label: '₹5M+', value: '4' }
+];
+
 const DataContext = createContext();
 
 export const useData = () => useContext(DataContext);
@@ -47,6 +68,9 @@ export const DataProvider = ({ children }) => {
   const [hero, setHero] = useState(() => loadState('siteHero', initialHero));
   const [locations, setLocations] = useState(() => loadState('siteLocations', initialLocations));
   const [propertyTypes, setPropertyTypes] = useState(() => loadState('sitePropertyTypes', initialPropertyTypes));
+  const [siteStats, setSiteStats] = useState(() => loadState('siteStats', initialSiteStats));
+  const [companyInfo, setCompanyInfo] = useState(() => loadState('companyInfo', initialCompanyInfo));
+  const [priceRanges, setPriceRanges] = useState(() => loadState('priceRanges', initialPriceRanges));
   
   const [isInitialized, setIsInitialized] = useState(false);
 
@@ -63,6 +87,9 @@ export const DataProvider = ({ children }) => {
           if (data.hero && Object.keys(data.hero).length > 0) setHero(data.hero);
           if (data.locations?.length) setLocations(data.locations);
           if (data.propertyTypes?.length) setPropertyTypes(data.propertyTypes);
+          if (data.siteStats && Object.keys(data.siteStats).length > 0) setSiteStats(data.siteStats);
+          if (data.companyInfo && Object.keys(data.companyInfo).length > 0) setCompanyInfo(data.companyInfo);
+          if (data.priceRanges?.length) setPriceRanges(data.priceRanges);
         }
       })
       .catch(err => console.error("Error loading data from DB:", err))
@@ -83,19 +110,22 @@ export const DataProvider = ({ children }) => {
     localStorage.setItem('siteHero', JSON.stringify(hero));
     localStorage.setItem('siteLocations', JSON.stringify(locations));
     localStorage.setItem('sitePropertyTypes', JSON.stringify(propertyTypes));
+    localStorage.setItem('siteStats', JSON.stringify(siteStats));
+    localStorage.setItem('companyInfo', JSON.stringify(companyInfo));
+    localStorage.setItem('priceRanges', JSON.stringify(priceRanges));
 
     const timeoutId = setTimeout(() => {
       fetch('/api/data', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          properties, agents, testimonials, categories, hero, locations, propertyTypes
+          properties, agents, testimonials, categories, hero, locations, propertyTypes, siteStats, companyInfo, priceRanges
         })
       }).catch(err => console.error("Error saving data to DB:", err));
     }, 1000);
 
     return () => clearTimeout(timeoutId);
-  }, [properties, agents, testimonials, categories, hero, locations, propertyTypes, isInitialized]);
+  }, [properties, agents, testimonials, categories, hero, locations, propertyTypes, siteStats, companyInfo, priceRanges, isInitialized]);
 
   const value = {
     properties,
@@ -112,6 +142,12 @@ export const DataProvider = ({ children }) => {
     setLocations,
     propertyTypes,
     setPropertyTypes,
+    siteStats,
+    setSiteStats,
+    companyInfo,
+    setCompanyInfo,
+    priceRanges,
+    setPriceRanges,
     featuredProperties: properties,
     teamAgents: agents
   };

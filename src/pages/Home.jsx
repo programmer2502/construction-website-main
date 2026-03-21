@@ -9,7 +9,7 @@ import './Home.css';
 
 const Home = () => {
   const navigate = useNavigate();
-  const { featuredProperties, teamAgents, testimonials, categories, hero, locations, propertyTypes } = useData();
+  const { featuredProperties, teamAgents, testimonials, categories, hero, locations, propertyTypes, siteStats, priceRanges } = useData();
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -53,10 +53,9 @@ const Home = () => {
                 <label>Price Range</label>
                 <select defaultValue="">
                   <option value="" disabled>Any price</option>
-                  <option value="1">Under ₹1M</option>
-                  <option value="2">₹1M - ₹3M</option>
-                  <option value="3">₹3M - ₹5M</option>
-                  <option value="4">₹5M+</option>
+                  {priceRanges && priceRanges.map(pr => (
+                    <option key={pr.id} value={pr.value}>{pr.label}</option>
+                  ))}
                 </select>
               </div>
               <button type="submit" className="btn btn-primary search-submit">
@@ -145,19 +144,19 @@ const Home = () => {
       <section className="stats-section">
         <div className="container stats-grid">
           <div className="stat-item">
-            <h3 className="stat-number">10,000+</h3>
+            <h3 className="stat-number">{siteStats?.listings || '10,000+'}</h3>
             <p className="stat-label">Active Listings</p>
           </div>
           <div className="stat-item">
-            <h3 className="stat-number">5,000+</h3>
+            <h3 className="stat-number">{siteStats?.clients || '5,000+'}</h3>
             <p className="stat-label">Happy Clients</p>
           </div>
           <div className="stat-item">
-            <h3 className="stat-number">200+</h3>
+            <h3 className="stat-number">{siteStats?.cities || '200+'}</h3>
             <p className="stat-label">Cities Covered</p>
           </div>
           <div className="stat-item">
-            <h3 className="stat-number">98%</h3>
+            <h3 className="stat-number">{siteStats?.satisfaction || '98%'}</h3>
             <p className="stat-label">Satisfaction Rate</p>
           </div>
         </div>

@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Building2, Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin, ArrowRight } from 'lucide-react';
+import { useData } from '../../context/DataContext';
 import './Footer.css';
 
 const Footer = () => {
+  const { companyInfo } = useData();
   return (
     <footer className="footer">
       <div className="container">
@@ -54,9 +56,9 @@ const Footer = () => {
               </button>
             </form>
             <div className="footer-contact-info">
-              <p><Mail size={16} /> info@Land24.com</p>
-              <p><Phone size={16} /> +91 9880345558</p>
-              <p><MapPin size={16} /> Panathur, Bangalore 560087</p>
+              <p><Mail size={16} /> {companyInfo?.email || 'info@Land24.com'}</p>
+              <p><Phone size={16} /> {companyInfo?.phone || '+91 9880345558'}</p>
+              <p><MapPin size={16} /> {companyInfo?.address || 'Panathur, Bangalore 560087'}</p>
             </div>
           </div>
         </div>

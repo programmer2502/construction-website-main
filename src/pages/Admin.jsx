@@ -4,7 +4,7 @@ import { Plus, Edit2, Trash2, Save, X, Lock, LogOut } from 'lucide-react';
 import './Admin.css';
 
 const Admin = () => {
-  const { properties, setProperties, agents, setAgents, testimonials, setTestimonials, categories, setCategories, hero, setHero, locations, setLocations, propertyTypes, setPropertyTypes } = useData();
+  const { properties, setProperties, agents, setAgents, testimonials, setTestimonials, categories, setCategories, hero, setHero, locations, setLocations, propertyTypes, setPropertyTypes, siteStats, setSiteStats, companyInfo, setCompanyInfo, priceRanges, setPriceRanges } = useData();
   const [activeTab, setActiveTab] = useState('properties');
 
   // Auth state
@@ -199,6 +199,42 @@ const Admin = () => {
     alert('Hero settings saved!');
   };
 
+  // Price Range Handlers
+  const savePriceRange = (e) => {
+    e.preventDefault();
+    if (editingId === 'new') {
+      const newPR = { ...formData, id: `pr-${Date.now()}` };
+      setPriceRanges([...priceRanges, newPR]);
+    } else {
+      setPriceRanges(priceRanges.map(pr => pr.id === editingId ? formData : pr));
+    }
+    cancelEdit();
+  };
+
+  const deletePriceRange = (id) => {
+    if (window.confirm('Delete this price range?')) {
+      setPriceRanges(priceRanges.filter(pr => pr.id !== id));
+    }
+  };
+
+  // Settings Handlers (Stats & Company Info)
+  const saveSettings = (e) => {
+    e.preventDefault();
+    setSiteStats({
+      listings: formData.listings,
+      clients: formData.clients,
+      cities: formData.cities,
+      satisfaction: formData.satisfaction
+    });
+    setCompanyInfo({
+      whatsapp: formData.whatsapp,
+      phone: formData.phone,
+      email: formData.email,
+      address: formData.address
+    });
+    alert('Settings saved!');
+  };
+
   const renderContent = () => {
     if (activeTab === 'properties') {
       return (
@@ -237,6 +273,15 @@ const Admin = () => {
                     <option value="" disabled>Select Type</option>
                     {propertyTypes.map(pt => (
                       <option key={pt.id} value={pt.name}>{pt.name}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="admin-form-group">
+                  <label>Contact Agent</label>
+                  <select className="admin-input" name="agentId" value={formData.agentId || ''} onChange={handleInputChange}>
+                    <option value="">Global/Default Agent</option>
+                    {agents.map(a => (
+                      <option key={a.id} value={a.id}>{a.name}</option>
                     ))}
                   </select>
                 </div>
@@ -640,6 +685,110 @@ const Admin = () => {
         </div>
       );
     }
+
+    if (activeTab === 'price-ranges') {
+      return (
+        <div className="admin-glass-panel animate-fade-in">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+            <h2>Manage Price Ranges</h2>
+            <button className="admin-btn admin-btn-primary" onClick={() => startEdit({ id: 'new', label: '', value: '' })}>
+              <Plus size={18} /> Add Price Range
+            </button>
+          </div>
+
+          {editingId && (
+            <form onSubmit={savePriceRange} style={{ background: 'rgba(0,0,0,0.2)', padding: '1.5rem', borderRadius: '12px', marginBottom: '2rem' }}>
+              <h3 style={{ marginBottom: '1rem' }}>{editingId === 'new' ? 'New Price Range' : 'Edit Price Range'}</h3>
+              <div className="admin-form-group">
+                <label>Label (e.g. ₹1M - ₹3M)</label>
+                <input className="admin-input" name="label" value={formData.label || ''} onChange={handleInputChange} required />
+              </div>
+              <div className="admin-form-group">
+                <label>Option Value (e.g. 2)</label>
+                <input className="admin-input" name="value" value={formData.value || ''} onChange={handleInputChange} required />
+              </div>
+              <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+                <button type="submit" className="admin-btn admin-btn-primary"><Save size={18} /> Save</button>
+                <button type="button" className="admin-btn admin-btn-danger" onClick={cancelEdit}><X size={18} /> Cancel</button>
+              </div>
+            </form>
+          )}
+
+          <div className="admin-list">
+            {priceRanges.map(pr => (
+              <div key={pr.id} className="admin-list-item">
+                <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                  <div className="admin-item-content">
+                    <h4>{pr.label}</h4>
+                    <p>Value: {pr.value}</p>
+                  </div>
+                </div>
+                <div className="admin-item-actions">
+                  <button className="admin-btn-edit" onClick={() => startEdit(pr)}><Edit2 size={16} /></button>
+                  <button className="admin-btn-edit admin-btn-danger" onClick={() => deletePriceRange(pr.id)}><Trash2 size={16} color="currentColor" /></button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    if (activeTab === 'settings') {
+      return (
+        <div className="admin-glass-panel animate-fade-in">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+            <h2>Global Settings & Stats</h2>
+          </div>
+
+          <form onSubmit={saveSettings} style={{ background: 'rgba(0,0,0,0.2)', padding: '1.5rem', borderRadius: '12px', marginBottom: '2rem' }}>
+            <h3 style={{ marginBottom: '1rem' }}>Site Statistics</h3>
+            <div className="admin-form-grid">
+              <div className="admin-form-group">
+                <label>Active Listings</label>
+                <input className="admin-input" name="listings" value={formData.listings !== undefined ? formData.listings : siteStats.listings} onChange={handleInputChange} required />
+              </div>
+              <div className="admin-form-group">
+                <label>Happy Clients</label>
+                <input className="admin-input" name="clients" value={formData.clients !== undefined ? formData.clients : siteStats.clients} onChange={handleInputChange} required />
+              </div>
+              <div className="admin-form-group">
+                <label>Cities Covered</label>
+                <input className="admin-input" name="cities" value={formData.cities !== undefined ? formData.cities : siteStats.cities} onChange={handleInputChange} required />
+              </div>
+              <div className="admin-form-group">
+                <label>Satisfaction Rate</label>
+                <input className="admin-input" name="satisfaction" value={formData.satisfaction !== undefined ? formData.satisfaction : siteStats.satisfaction} onChange={handleInputChange} required />
+              </div>
+            </div>
+
+            <h3 style={{ marginBottom: '1rem', marginTop: '2rem' }}>Company Contact Info</h3>
+            <div className="admin-form-grid">
+              <div className="admin-form-group">
+                <label>WhatsApp Number (e.g. 9880345558)</label>
+                <input className="admin-input" name="whatsapp" value={formData.whatsapp !== undefined ? formData.whatsapp : companyInfo.whatsapp} onChange={handleInputChange} required />
+              </div>
+              <div className="admin-form-group">
+                <label>Display Phone Number</label>
+                <input className="admin-input" name="phone" value={formData.phone !== undefined ? formData.phone : companyInfo.phone} onChange={handleInputChange} required />
+              </div>
+              <div className="admin-form-group">
+                <label>Support Email</label>
+                <input className="admin-input" name="email" value={formData.email !== undefined ? formData.email : companyInfo.email} onChange={handleInputChange} required />
+              </div>
+              <div className="admin-form-group">
+                <label>Office Address</label>
+                <input className="admin-input" name="address" value={formData.address !== undefined ? formData.address : companyInfo.address} onChange={handleInputChange} required />
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem' }}>
+              <button type="submit" className="admin-btn admin-btn-primary"><Save size={18} /> Save Settings</button>
+            </div>
+          </form>
+        </div>
+      );
+    }
   };
 
   return (
@@ -732,6 +881,18 @@ const Admin = () => {
                 onClick={() => { setActiveTab('hero'); setFormData(hero); }}
               >
                 Hero Section
+              </button>
+              <button
+                className={`admin-tab ${activeTab === 'price-ranges' ? 'active' : ''}`}
+                onClick={() => { setActiveTab('price-ranges'); cancelEdit(); }}
+              >
+                Price Ranges
+              </button>
+              <button
+                className={`admin-tab ${activeTab === 'settings' ? 'active' : ''}`}
+                onClick={() => { setActiveTab('settings'); setFormData({ ...siteStats, ...companyInfo }); }}
+              >
+                Settings
               </button>
             </div>
 

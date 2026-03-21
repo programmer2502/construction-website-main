@@ -13,12 +13,12 @@ const PropertyDetail = () => {
   const [activeTab, setActiveTab] = useState('overview');
 
   const { isInWishlist, toggleWishlist } = useWishlist();
-  const { featuredProperties, teamAgents } = useData();
+  const { featuredProperties, teamAgents, companyInfo } = useData();
   const isSaved = isInWishlist(id);
 
   // Find property from mock data, default to first if not found
   const property = featuredProperties.find(p => p.id === id) || featuredProperties[0];
-  const agent = teamAgents[0]; // Assign random agent
+  const agent = property.agentId ? teamAgents.find(a => a.id === property.agentId) || teamAgents[0] : teamAgents[0]; // Assign specific agent or random agent
 
   // Handle dynamic amenities or fallback to empty array
   const amenitiesList = property.amenities ? property.amenities.split(',').map(a => a.trim()) : [];
@@ -46,22 +46,22 @@ const PropertyDetail = () => {
       <div className="property-gallery" style={{ position: 'relative' }}>
         <div className="gallery-main" style={{ position: 'relative', overflow: 'hidden' }}>
           {images.map((img, idx) => (
-             <img 
-               key={idx} 
-               src={img} 
-               alt={`${property.title} - Slide ${idx + 1}`} 
-               style={{
-                 position: idx === 0 ? 'relative' : 'absolute',
-                 top: 0,
-                 left: 0,
-                 width: '100%',
-                 height: '100%',
-                 objectFit: 'cover',
-                 opacity: idx === currentImgIndex ? 1 : 0,
-                 transition: 'opacity 0.8s ease-in-out',
-                 zIndex: idx === currentImgIndex ? 1 : 0
-               }}
-             />
+            <img
+              key={idx}
+              src={img}
+              alt={`${property.title} - Slide ${idx + 1}`}
+              style={{
+                position: idx === 0 ? 'relative' : 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                opacity: idx === currentImgIndex ? 1 : 0,
+                transition: 'opacity 0.8s ease-in-out',
+                zIndex: idx === currentImgIndex ? 1 : 0
+              }}
+            />
           ))}
           <div className="gallery-badges" style={{ zIndex: 10 }}>
             <span className="badge badge-primary">{property.type}</span>
@@ -85,23 +85,23 @@ const PropertyDetail = () => {
             <ChevronLeft size={24} />
           </button>
           <button className="slider-nav-btn next-btn" onClick={nextImage} aria-label="Next Slide">
-             <ChevronRight size={24} />
+            <ChevronRight size={24} />
           </button>
         </div>
         <div className="gallery-thumbs d-none d-md-grid">
           {images.slice(1, 3).map((img, idx) => (
-             <img 
-               key={`thumb-${idx}`} 
-               src={img} 
-               alt={`Thumbnail ${idx + 1}`} 
-               onClick={() => setCurrentImgIndex(idx + 1)}
-               style={{ 
-                 cursor: 'pointer', 
-                 opacity: currentImgIndex === (idx + 1) ? 1 : 0.6,
-                 transition: 'opacity 0.3s ease',
-                 border: currentImgIndex === (idx + 1) ? '3px solid var(--color-accent)' : '3px solid transparent'
-               }} 
-             />
+            <img
+              key={`thumb-${idx}`}
+              src={img}
+              alt={`Thumbnail ${idx + 1}`}
+              onClick={() => setCurrentImgIndex(idx + 1)}
+              style={{
+                cursor: 'pointer',
+                opacity: currentImgIndex === (idx + 1) ? 1 : 0.6,
+                transition: 'opacity 0.3s ease',
+                border: currentImgIndex === (idx + 1) ? '3px solid var(--color-accent)' : '3px solid transparent'
+              }}
+            />
           ))}
           <div className="gallery-more" onClick={() => setCurrentImgIndex(images.length > 3 ? 3 : 0)} style={{ cursor: 'pointer' }}>
             <ImageIcon size={24} />
@@ -110,7 +110,8 @@ const PropertyDetail = () => {
         </div>
       </div>
 
-      <style dangerouslySetInnerHTML={{__html: `
+      <style dangerouslySetInnerHTML={{
+        __html: `
         .slider-nav-btn {
           position: absolute;
           top: 50%;
@@ -315,6 +316,7 @@ const PropertyDetail = () => {
                     <option value="English">English</option>
                     <option value="Kannada">Kannada</option>
                     <option value="Tamil">Tamil</option>
+                    <option value="Telugu">Telugu</option>
                     <option value="Hindi">Hindi</option>
                   </select>
                   <textarea placeholder="I'm interested in this property..." className="widget-input" rows="3" required></textarea>
@@ -324,7 +326,7 @@ const PropertyDetail = () => {
 
                 <div className="quick-contact">
                   <a href={`tel:${agent.phone}`} className="btn btn-outline w-100 mb-2 mt-2">Call Person</a>
-                  <a href={`https://wa.me/${agent.phone.replace(/[^0-9]/g, '')}`} target="_blank" rel="noreferrer" className="btn btn-primary whatsapp-btn w-100">
+                  <a href={`https://wa.me/${companyInfo?.whatsapp || agent.phone.replace(/[^0-9]/g, '')}`} target="_blank" rel="noreferrer" className="btn btn-primary whatsapp-btn w-100">
                     WhatsApp
                   </a>
                 </div>

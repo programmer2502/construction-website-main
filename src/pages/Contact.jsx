@@ -1,8 +1,10 @@
 import React from 'react';
 import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
 import Button from '../components/ui/Button';
+import { useData } from '../context/DataContext';
 
 const Contact = () => {
+  const { companyInfo } = useData();
   return (
     <div className="contact-page animate-fade-in" style={{ paddingTop: '100px', paddingBottom: '5rem' }}>
       <div className="container">
@@ -23,7 +25,7 @@ const Contact = () => {
               </div>
               <div>
                 <h5 style={{ marginBottom: '0.25rem' }}>Our Office</h5>
-                <p className="text-muted" style={{ margin: 0 }}>Panathur, Bangalore 560087</p>
+                <p className="text-muted" style={{ margin: 0 }}>{companyInfo?.address || 'Panathur, Bangalore 560087'}</p>
               </div>
             </div>
 
@@ -33,7 +35,7 @@ const Contact = () => {
               </div>
               <div>
                 <h5 style={{ marginBottom: '0.25rem' }}>Phone</h5>
-                <p className="text-muted" style={{ margin: 0 }}>+91 9880345558<br />+91 9880345558</p>
+                <p className="text-muted" style={{ margin: 0 }}>{companyInfo?.phone || '+91 9880345558'}</p>
               </div>
             </div>
 
@@ -43,7 +45,7 @@ const Contact = () => {
               </div>
               <div>
                 <h5 style={{ marginBottom: '0.25rem' }}>Email</h5>
-                <p className="text-muted" style={{ margin: 0 }}>info@Land24.com<br />support@Land24.com</p>
+                <p className="text-muted" style={{ margin: 0 }}>{companyInfo?.email || 'info@Land24.com'}</p>
               </div>
             </div>
 
@@ -58,7 +60,7 @@ const Contact = () => {
             </div>
 
             <div className="mt-5" style={{ marginTop: '3rem' }}>
-              <a href="https://wa.me/9880345558" target="_blank" rel="noreferrer" className="btn w-100" style={{ backgroundColor: '#25D366', color: '#fff', width: '100%', display: 'flex', justifyContent: 'center' }}>Chat on WhatsApp</a>
+              <a href={`https://wa.me/${companyInfo?.whatsapp || '9880345558'}`} target="_blank" rel="noreferrer" className="btn w-100" style={{ backgroundColor: '#25D366', color: '#fff', width: '100%', display: 'flex', justifyContent: 'center' }}>Chat on WhatsApp</a>
             </div>
           </div>
 
