@@ -32,6 +32,7 @@ const AppData = mongoose.models.AppData || mongoose.model('AppData', AppDataSche
 // GET /api/data - Fetch all application data
 app.get('/api/data', async (req, res) => {
   try {
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
     let data = await AppData.findOne();
     if (!data) {
       data = new AppData({

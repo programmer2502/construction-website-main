@@ -74,9 +74,11 @@ export const DataProvider = ({ children }) => {
   
   const [isInitialized, setIsInitialized] = useState(false);
 
+  const isFirstRender = React.useRef(true);
+
   // Fetch from DB on mount
   useEffect(() => {
-    fetch('/api/data')
+    fetch(`/api/data?t=${Date.now()}`, { cache: 'no-store' })
       .then(res => res.json())
       .then(data => {
         if (data && !data.error) {
@@ -101,6 +103,11 @@ export const DataProvider = ({ children }) => {
   // Save to DB on any data change (debounced)
   useEffect(() => {
     if (!isInitialized) return;
+    
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
 
     // Optional: save to local storage as fallback/buffer
     localStorage.setItem('siteProperties', JSON.stringify(properties));
