@@ -12,9 +12,25 @@ app.use(express.json({ limit: '50mb' }));
 // URL encode the '@' character in the password if necessary
 const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://Construction:Construction%40334@cluster0.8kr84vh.mongodb.net/constructionApp?retryWrites=true&w=majority";
 
-mongoose.connect(MONGO_URI)
-  .then(() => console.log('Connected to MongoDB via mongoose'))
-  .catch(err => console.error('MongoDB connection error:', err));
+let cachedConnection = null;
+
+const connectDB = async () => {
+  if (cachedConnection) return cachedConnection;
+  if (mongoose.connection.readyState === 1) {
+    cachedConnection = mongoose;
+    return cachedConnection;
+  }
+  try {
+    cachedConnection = await mongoose.connect(MONGO_URI, {
+      serverSelectionTimeoutMS: 5000 // Timeout quickly if IP is blocked
+    });
+    console.log('Connected to MongoDB via mongoose');
+    return cachedConnection;
+  } catch (err) {
+    console.error('MongoDB connection error:', err);
+    throw err;
+  }
+};
 
 const AppDataSchema = new mongoose.Schema({
   properties: Array,
@@ -35,6 +51,7 @@ const AppData = mongoose.models.AppData || mongoose.model('AppData', AppDataSche
 // GET /api/data - Fetch all application data
 app.get('/api/data', async (req, res) => {
   try {
+    await connectDB();
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
     let data = await AppData.findOne();
     if (!data) {
@@ -46,13 +63,14 @@ app.get('/api/data', async (req, res) => {
     res.json(data);
   } catch (error) {
     console.error('Error fetching data:', error);
-    res.status(500).json({ error: 'Server error' });
+    res.status(500).json({ error: 'Server error: ' + (error.message || error.toString()) });
   }
 });
 
 // POST /api/data - Save/Update application data
 app.post('/api/data', async (req, res) => {
   try {
+    await connectDB();
     const newData = req.body;
     let data = await AppData.findOne();
     
@@ -76,7 +94,7 @@ app.post('/api/data', async (req, res) => {
     res.json({ success: true, message: 'Data updated successfully', data });
   } catch (error) {
     console.error('Error saving data:', error);
-    res.status(500).json({ error: 'Server error' });
+    res.status(500).json({ error: 'Server error: ' + (error.message || error.toString()) });
   }
 });
 
