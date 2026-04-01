@@ -76,29 +76,51 @@ export const DataProvider = ({ children }) => {
 
   const isFirstRender = React.useRef(true);
 
+  const skipNextSave = React.useRef(false);
+
+  const fetchData = async () => {
+    try {
+      const res = await fetch(`/api/data?t=${Date.now()}`, { cache: 'no-store' });
+      const data = await res.json();
+      if (data && !data.error) {
+        skipNextSave.current = true; // Mark the upcoming state changes as originating from the server
+        
+        if (data.properties && Array.isArray(data.properties)) setProperties(data.properties);
+        if (data.agents && Array.isArray(data.agents)) setAgents(data.agents);
+        if (data.testimonials && Array.isArray(data.testimonials)) setTestimonials(data.testimonials);
+        if (data.categories && Array.isArray(data.categories)) setCategories(data.categories);
+        if (data.hero && Object.keys(data.hero).length > 0) setHero(data.hero);
+        if (data.locations && Array.isArray(data.locations)) setLocations(data.locations);
+        if (data.propertyTypes && Array.isArray(data.propertyTypes)) setPropertyTypes(data.propertyTypes);
+        if (data.siteStats && Object.keys(data.siteStats).length > 0) setSiteStats(data.siteStats);
+        if (data.companyInfo && Object.keys(data.companyInfo).length > 0) setCompanyInfo(data.companyInfo);
+        if (data.priceRanges && Array.isArray(data.priceRanges)) setPriceRanges(data.priceRanges);
+      }
+    } catch (err) {
+      console.error("Error loading data from DB:", err);
+    }
+  };
+
   // Fetch from DB on mount
   useEffect(() => {
-    fetch(`/api/data?t=${Date.now()}`, { cache: 'no-store' })
-      .then(res => res.json())
-      .then(data => {
-        if (data && !data.error) {
-          if (data.properties?.length) setProperties(data.properties);
-          if (data.agents?.length) setAgents(data.agents);
-          if (data.testimonials?.length) setTestimonials(data.testimonials);
-          if (data.categories?.length) setCategories(data.categories);
-          if (data.hero && Object.keys(data.hero).length > 0) setHero(data.hero);
-          if (data.locations?.length) setLocations(data.locations);
-          if (data.propertyTypes?.length) setPropertyTypes(data.propertyTypes);
-          if (data.siteStats && Object.keys(data.siteStats).length > 0) setSiteStats(data.siteStats);
-          if (data.companyInfo && Object.keys(data.companyInfo).length > 0) setCompanyInfo(data.companyInfo);
-          if (data.priceRanges?.length) setPriceRanges(data.priceRanges);
-        }
-      })
-      .catch(err => console.error("Error loading data from DB:", err))
-      .finally(() => {
-        setTimeout(() => setIsInitialized(true), 100);
-      });
+    fetchData().finally(() => {
+      setTimeout(() => setIsInitialized(true), 100);
+    });
   }, []);
+
+  // Sync data in background periodically and on window focus
+  useEffect(() => {
+    if (!isInitialized) return;
+
+    const intervalId = setInterval(fetchData, 15000);
+    const handleFocus = () => fetchData();
+    window.addEventListener('focus', handleFocus);
+
+    return () => {
+      clearInterval(intervalId);
+      window.removeEventListener('focus', handleFocus);
+    };
+  }, [isInitialized]);
 
   // Save to DB on any data change (debounced)
   useEffect(() => {
@@ -106,6 +128,11 @@ export const DataProvider = ({ children }) => {
     
     if (isFirstRender.current) {
       isFirstRender.current = false;
+      return;
+    }
+
+    if (skipNextSave.current) {
+      skipNextSave.current = false;
       return;
     }
 
@@ -156,7 +183,8 @@ export const DataProvider = ({ children }) => {
     priceRanges,
     setPriceRanges,
     featuredProperties: properties,
-    teamAgents: agents
+    teamAgents: agents,
+    refreshData: fetchData
   };
 
   return (

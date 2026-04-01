@@ -23,7 +23,10 @@ const AppDataSchema = new mongoose.Schema({
   categories: Array,
   hero: Object,
   locations: Array,
-  propertyTypes: Array
+  propertyTypes: Array,
+  siteStats: Object,
+  companyInfo: Object,
+  priceRanges: Array
 }, { timestamps: true });
 
 // Check if model exists to avoid OverwriteModelError in serverless environments
@@ -36,7 +39,7 @@ app.get('/api/data', async (req, res) => {
     let data = await AppData.findOne();
     if (!data) {
       data = new AppData({
-        properties: [], agents: [], testimonials: [], categories: [], hero: {}, locations: [], propertyTypes: []
+        properties: [], agents: [], testimonials: [], categories: [], hero: {}, locations: [], propertyTypes: [], siteStats: {}, companyInfo: {}, priceRanges: []
       });
       await data.save();
     }
@@ -61,6 +64,9 @@ app.post('/api/data', async (req, res) => {
       data.hero = newData.hero || data.hero;
       data.locations = newData.locations || data.locations;
       data.propertyTypes = newData.propertyTypes || data.propertyTypes;
+      data.siteStats = newData.siteStats || data.siteStats;
+      data.companyInfo = newData.companyInfo || data.companyInfo;
+      data.priceRanges = newData.priceRanges || data.priceRanges;
       await data.save();
     } else {
       data = new AppData(newData);
