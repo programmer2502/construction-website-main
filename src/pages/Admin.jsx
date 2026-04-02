@@ -277,6 +277,15 @@ const Admin = () => {
                   </select>
                 </div>
                 <div className="admin-form-group">
+                  <label>Category</label>
+                  <select className="admin-input" name="category" value={formData.category || ''} onChange={handleInputChange} required>
+                    <option value="" disabled>Select Category</option>
+                    {categories.map(cat => (
+                      <option key={cat.id} value={cat.title}>{cat.title}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="admin-form-group">
                   <label>Contact Agent</label>
                   <select className="admin-input" name="agentId" value={formData.agentId || ''} onChange={handleInputChange}>
                     <option value="">Global/Default Agent</option>
@@ -332,7 +341,7 @@ const Admin = () => {
                   {p.image && <img src={p.image} alt={p.title} style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '8px' }} />}
                   <div className="admin-item-content">
                     <h4>{p.title} <span style={{ fontSize: '0.8rem', background: 'rgba(255,255,255,0.1)', padding: '2px 8px', borderRadius: '12px', marginLeft: '8px' }}>{p.type}</span></h4>
-                    <p>{p.price} • {p.location}</p>
+                    <p>{p.price} • {p.location}{p.category && ` • ${p.category}`}</p>
                   </div>
                 </div>
                 <div className="admin-item-actions">
