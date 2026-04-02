@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { MapPin, Bed, Bath, Square, Calendar, Heart, Share2, Check, Info, Map as MapIcon, Image as ImageIcon, ChevronLeft, ChevronRight } from 'lucide-react';
+import { MapPin, Bed, Bath, Square, Calendar, Heart, Share2, Check, Info, Map as MapIcon, Image as ImageIcon, ChevronLeft, ChevronRight, User } from 'lucide-react';
 import PropertyCard from '../components/ui/PropertyCard';
 import Button from '../components/ui/Button';
 import EmiCalculator from '../components/features/EmiCalculator';
@@ -325,10 +325,16 @@ const PropertyDetail = () => {
               <div className="contact-card widget-card">
                 <h4 className="widget-title">Contact Person</h4>
                 <div className="agent-profile-sm">
-                  <img src={agent.image} alt={agent.name} />
+                  {agent.image ? (
+                    <img src={agent.image} alt={agent.name || 'Agent'} />
+                  ) : (
+                    <div style={{ width: '50px', height: '50px', borderRadius: '50%', background: 'var(--color-bg-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-text-light)' }}>
+                      <User size={24} />
+                    </div>
+                  )}
                   <div>
-                    <h5>{agent.name}</h5>
-                    <span>{agent.title}</span>
+                    <h5>{agent.name || 'Our Agent'}</h5>
+                    <span>{agent.title || 'Property Consultant'}</span>
                   </div>
                 </div>
 
@@ -350,8 +356,8 @@ const PropertyDetail = () => {
                 </form>
 
                 <div className="quick-contact">
-                  <a href={`tel:${agent.phone}`} className="btn btn-outline w-100 mb-2 mt-2">Call Person</a>
-                  <a href={`https://wa.me/${companyInfo?.whatsapp || agent.phone.replace(/[^0-9]/g, '')}`} target="_blank" rel="noreferrer" className="btn btn-primary whatsapp-btn w-100">
+                  <a href={`tel:${agent.phone || companyInfo?.phone || '+91 9880345558'}`} className="btn btn-outline w-100 mb-2 mt-2">Call Person</a>
+                  <a href={`https://wa.me/${companyInfo?.whatsapp || (agent.phone ? agent.phone.replace(/[^0-9]/g, '') : '919880345558')}`} target="_blank" rel="noreferrer" className="btn btn-primary whatsapp-btn w-100">
                     WhatsApp
                   </a>
                 </div>
