@@ -33,27 +33,19 @@ const DataContext = createContext();
 export const useData = () => useContext(DataContext);
 
 export const DataProvider = ({ children }) => {
-  const loadState = (key, initial) => {
-    try {
-      const item = localStorage.getItem(key);
-      return item ? JSON.parse(item) : initial;
-    } catch {
-      return initial;
-    }
-  };
-
-  const [properties, setProperties] = useState(() => loadState('siteProperties', initialProperties));
-  const [agents, setAgents] = useState(() => loadState('siteAgents', initialAgents));
-  const [testimonials, setTestimonials] = useState(() => loadState('siteTestimonials', initialTestimonials));
-  const [categories, setCategories] = useState(() => loadState('siteCategories', initialCategories));
-  const [hero, setHero] = useState(() => loadState('siteHero', initialHero));
-  const [locations, setLocations] = useState(() => loadState('siteLocations', initialLocations));
-  const [propertyTypes, setPropertyTypes] = useState(() => loadState('sitePropertyTypes', initialPropertyTypes));
-  const [siteStats, setSiteStats] = useState(() => loadState('siteStats', initialSiteStats));
-  const [companyInfo, setCompanyInfo] = useState(() => loadState('companyInfo', initialCompanyInfo));
-  const [priceRanges, setPriceRanges] = useState(() => loadState('priceRanges', initialPriceRanges));
+  const [properties, setProperties] = useState(initialProperties);
+  const [agents, setAgents] = useState(initialAgents);
+  const [testimonials, setTestimonials] = useState(initialTestimonials);
+  const [categories, setCategories] = useState(initialCategories);
+  const [hero, setHero] = useState(initialHero);
+  const [locations, setLocations] = useState(initialLocations);
+  const [propertyTypes, setPropertyTypes] = useState(initialPropertyTypes);
+  const [siteStats, setSiteStats] = useState(initialSiteStats);
+  const [companyInfo, setCompanyInfo] = useState(initialCompanyInfo);
+  const [priceRanges, setPriceRanges] = useState(initialPriceRanges);
   
   const [isInitialized, setIsInitialized] = useState(false);
+  const isDataLoaded = React.useRef(false);
 
   const isFirstRender = React.useRef(true);
 
@@ -76,6 +68,8 @@ export const DataProvider = ({ children }) => {
         if (data.siteStats && Object.keys(data.siteStats).length > 0) setSiteStats(data.siteStats);
         if (data.companyInfo && Object.keys(data.companyInfo).length > 0) setCompanyInfo(data.companyInfo);
         if (data.priceRanges && Array.isArray(data.priceRanges)) setPriceRanges(data.priceRanges);
+        
+        isDataLoaded.current = true;
       }
     } catch (err) {
       console.error("Error loading data from DB:", err);
@@ -89,23 +83,11 @@ export const DataProvider = ({ children }) => {
     });
   }, []);
 
-  // Sync data in background periodically and on window focus
-  useEffect(() => {
-    if (!isInitialized) return;
-
-    const intervalId = setInterval(fetchData, 15000);
-    const handleFocus = () => fetchData();
-    window.addEventListener('focus', handleFocus);
-
-    return () => {
-      clearInterval(intervalId);
-      window.removeEventListener('focus', handleFocus);
-    };
-  }, [isInitialized]);
+  // Removed aggressive background sync periodically to prevent state reverted issues
 
   // Save to DB on any data change (debounced)
   useEffect(() => {
-    if (!isInitialized) return;
+    if (!isInitialized || !isDataLoaded.current) return;
     
     if (isFirstRender.current) {
       isFirstRender.current = false;
@@ -116,18 +98,6 @@ export const DataProvider = ({ children }) => {
       skipNextSave.current = false;
       return;
     }
-
-    // Optional: save to local storage as fallback/buffer
-    localStorage.setItem('siteProperties', JSON.stringify(properties));
-    localStorage.setItem('siteAgents', JSON.stringify(agents));
-    localStorage.setItem('siteTestimonials', JSON.stringify(testimonials));
-    localStorage.setItem('siteCategories', JSON.stringify(categories));
-    localStorage.setItem('siteHero', JSON.stringify(hero));
-    localStorage.setItem('siteLocations', JSON.stringify(locations));
-    localStorage.setItem('sitePropertyTypes', JSON.stringify(propertyTypes));
-    localStorage.setItem('siteStats', JSON.stringify(siteStats));
-    localStorage.setItem('companyInfo', JSON.stringify(companyInfo));
-    localStorage.setItem('priceRanges', JSON.stringify(priceRanges));
 
     const timeoutId = setTimeout(() => {
       fetch('/api/data', {
