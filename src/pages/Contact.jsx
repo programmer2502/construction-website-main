@@ -1,10 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
 import Button from '../components/ui/Button';
 import { useData } from '../context/DataContext';
 
 const Contact = () => {
   const { companyInfo } = useData();
+  
+  const [contactData, setContactData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+
+  const handleContactSubmit = (e) => {
+    e.preventDefault();
+    const waText = `*New General Inquiry*\n\n*Name:* ${contactData.firstName} ${contactData.lastName}\n*Email:* ${contactData.email}\n*Subject:* ${contactData.subject}\n\n*Message:*\n${contactData.message}`;
+    
+    let targetNumber = (companyInfo?.whatsapp || '9880345558').replace(/[^0-9]/g, '');
+    if (targetNumber.length === 10) targetNumber = '91' + targetNumber;
+
+    window.open(`https://wa.me/${targetNumber}?text=${encodeURIComponent(waText)}`, '_blank');
+  };
   return (
     <div className="contact-page animate-fade-in" style={{ paddingTop: '100px', paddingBottom: '5rem' }}>
       <div className="container">
@@ -66,28 +84,28 @@ const Contact = () => {
 
           <div className="contact-form-wrapper">
             <h3 className="font-serif mb-4" style={{ marginBottom: '2rem' }}>Send a Message</h3>
-            <form className="contact-form" onSubmit={(e) => e.preventDefault()} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            <form className="contact-form" onSubmit={handleContactSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
                 <div className="form-group" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   <label style={{ fontSize: '0.85rem', fontWeight: '600', color: 'var(--color-text-light)' }}>First Name</label>
-                  <input type="text" style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid var(--color-border)', background: 'transparent', color: 'var(--color-text)', fontFamily: 'var(--font-sans)' }} required />
+                  <input type="text" style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid var(--color-border)', background: 'transparent', color: 'var(--color-text)', fontFamily: 'var(--font-sans)' }} required value={contactData.firstName} onChange={e => setContactData({...contactData, firstName: e.target.value})} />
                 </div>
                 <div className="form-group" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   <label style={{ fontSize: '0.85rem', fontWeight: '600', color: 'var(--color-text-light)' }}>Last Name</label>
-                  <input type="text" style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid var(--color-border)', background: 'transparent', color: 'var(--color-text)', fontFamily: 'var(--font-sans)' }} required />
+                  <input type="text" style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid var(--color-border)', background: 'transparent', color: 'var(--color-text)', fontFamily: 'var(--font-sans)' }} required value={contactData.lastName} onChange={e => setContactData({...contactData, lastName: e.target.value})} />
                 </div>
               </div>
 
               <div className="form-group" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                 <label style={{ fontSize: '0.85rem', fontWeight: '600', color: 'var(--color-text-light)' }}>Email Address</label>
-                <input type="email" style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid var(--color-border)', background: 'transparent', color: 'var(--color-text)', fontFamily: 'var(--font-sans)' }} required />
+                <input type="email" style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid var(--color-border)', background: 'transparent', color: 'var(--color-text)', fontFamily: 'var(--font-sans)' }} required value={contactData.email} onChange={e => setContactData({...contactData, email: e.target.value})} />
               </div>
 
               <div className="form-group" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                 <label style={{ fontSize: '0.85rem', fontWeight: '600', color: 'var(--color-text-light)' }}>Subject / Property Interest</label>
-                <select style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid var(--color-border)', background: 'transparent', color: 'var(--color-text)', fontFamily: 'var(--font-sans)' }} required>
-                  <option value="" disabled selected>Select an option</option>
+                <select style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid var(--color-border)', background: 'transparent', color: 'var(--color-text)', fontFamily: 'var(--font-sans)' }} required value={contactData.subject} onChange={e => setContactData({...contactData, subject: e.target.value})}>
+                  <option value="" disabled>Select an option</option>
                   <option value="buy">Buying a property</option>
                   <option value="rent">Renting a property</option>
                   <option value="sell">Selling my property</option>
@@ -97,7 +115,7 @@ const Contact = () => {
 
               <div className="form-group" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                 <label style={{ fontSize: '0.85rem', fontWeight: '600', color: 'var(--color-text-light)' }}>Message</label>
-                <textarea rows="5" style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid var(--color-border)', background: 'transparent', color: 'var(--color-text)', fontFamily: 'var(--font-sans)', resize: 'vertical' }} required></textarea>
+                <textarea rows="5" style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid var(--color-border)', background: 'transparent', color: 'var(--color-text)', fontFamily: 'var(--font-sans)', resize: 'vertical' }} required value={contactData.message} onChange={e => setContactData({...contactData, message: e.target.value})}></textarea>
               </div>
 
               <Button type="submit" size="lg" style={{ width: '100%' }}>

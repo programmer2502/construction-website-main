@@ -45,6 +45,26 @@ const PropertyDetail = () => {
     return () => clearInterval(timer);
   }, []);
 
+  // Contact Form State
+  const [contactData, setContactData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    language: '',
+    message: ''
+  });
+
+  const handleContactSubmit = (e) => {
+    e.preventDefault();
+    const waText = `*New Property Inquiry*\n\n*Property:* ${property.title} (${property.location})\n*Name:* ${contactData.name}\n*Email:* ${contactData.email}\n*Phone:* ${contactData.phone}\n*Language:* ${contactData.language}\n\n*Message:*\n${contactData.message}`;
+    
+    // Clean target number and ensure country code
+    let targetNumber = (companyInfo?.whatsapp || '9880345558').replace(/[^0-9]/g, '');
+    if (targetNumber.length === 10) targetNumber = '91' + targetNumber;
+
+    window.open(`https://wa.me/${targetNumber}?text=${encodeURIComponent(waText)}`, '_blank');
+  };
+
   return (
     <div className="property-detail-page animate-fade-in">
       {/* Gallery Header */}
@@ -312,11 +332,11 @@ const PropertyDetail = () => {
                   </div>
                 </div>
 
-                <form className="contact-form" onSubmit={(e) => e.preventDefault()}>
-                  <input type="text" placeholder="Your Name" className="widget-input" required />
-                  <input type="email" placeholder="Your Email" className="widget-input" required />
-                  <input type="tel" placeholder="Your Phone" className="widget-input" required />
-                  <select className="widget-input" required defaultValue="">
+                <form className="contact-form" onSubmit={handleContactSubmit}>
+                  <input type="text" placeholder="Your Name" className="widget-input" required value={contactData.name} onChange={e => setContactData({...contactData, name: e.target.value})} />
+                  <input type="email" placeholder="Your Email" className="widget-input" required value={contactData.email} onChange={e => setContactData({...contactData, email: e.target.value})} />
+                  <input type="tel" placeholder="Your Phone" className="widget-input" required value={contactData.phone} onChange={e => setContactData({...contactData, phone: e.target.value})} />
+                  <select className="widget-input" required value={contactData.language} onChange={e => setContactData({...contactData, language: e.target.value})}>
                     <option value="" disabled>Select Language</option>
                     <option value="English">English</option>
                     <option value="Kannada">Kannada</option>
@@ -324,7 +344,7 @@ const PropertyDetail = () => {
                     <option value="Telugu">Telugu</option>
                     <option value="Hindi">Hindi</option>
                   </select>
-                  <textarea placeholder="I'm interested in this property..." className="widget-input" rows="3" required></textarea>
+                  <textarea placeholder="I'm interested in this property..." className="widget-input" rows="3" required value={contactData.message} onChange={e => setContactData({...contactData, message: e.target.value})}></textarea>
 
                   <Button type="submit" className="w-100 mt-2">Send Message</Button>
                 </form>
