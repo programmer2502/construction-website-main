@@ -5,8 +5,7 @@ import { useData } from '../context/DataContext';
 
 const Agents = () => {
   const { teamAgents } = useData();
-  // Mock duplicating agents for a fuller grid
-  const allAgents = [...teamAgents, ...teamAgents, ...teamAgents];
+  const allAgents = [...teamAgents];
 
   return (
     <div className="agents-page animate-fade-in" style={{ paddingTop: '100px', paddingBottom: '5rem' }}>

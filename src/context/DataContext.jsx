@@ -1,36 +1,22 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { featuredProperties as initialProperties, teamAgents as initialAgents, testimonials as initialTestimonials } from '../data/mockData';
 
-const initialCategories = [
-  { id: 'cat-1', title: 'Apartments', count: '124 Properties', image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=600&q=80', link: '/listings?cat=apartments', className: '' },
-  { id: 'cat-2', title: 'Luxury Villas', count: '86 Properties', image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=600&q=80', link: '/listings?cat=villas', className: 'tall-tile' },
-  { id: 'cat-3', title: 'Commercial Space', count: '45 Properties', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80', link: '/listings?cat=commercial', className: '' },
-  { id: 'cat-4', title: 'Plots & Land', count: '32 Properties', image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80', link: '/listings?cat=plots', className: 'wide-tile' },
-];
+const initialCategories = [];
 
 const initialHero = {
   title: 'Discover Properties That Define Your Lifestyle',
   subtitle: 'Premium real estate curated for discerning buyers and investors.'
 };
 
-const initialLocations = [
-  { id: 'loc-1', name: 'New York' },
-  { id: 'loc-2', name: 'Beverly Hills' },
-  { id: 'loc-3', name: 'Seattle' },
-  { id: 'loc-4', name: 'Chicago' }
-];
+const initialLocations = [];
 
-const initialPropertyTypes = [
-  { id: 'pt-1', name: 'Buy' },
-  { id: 'pt-2', name: 'Rent' },
-  { id: 'pt-3', name: 'Commercial' }
-];
+const initialPropertyTypes = [];
 
 const initialSiteStats = {
-  listings: '10,000+',
-  clients: '5,000+',
-  cities: '200+',
-  satisfaction: '98%'
+  listings: '0',
+  clients: '0',
+  cities: '0',
+  satisfaction: '0%'
 };
 
 const initialCompanyInfo = {
@@ -40,12 +26,7 @@ const initialCompanyInfo = {
   address: 'Panathur, Bangalore 560087'
 };
 
-const initialPriceRanges = [
-  { id: 'pr-1', label: 'Under ₹1M', value: '1' },
-  { id: 'pr-2', label: '₹1M - ₹3M', value: '2' },
-  { id: 'pr-3', label: '₹3M - ₹5M', value: '3' },
-  { id: 'pr-4', label: '₹5M+', value: '4' }
-];
+const initialPriceRanges = [];
 
 const DataContext = createContext();
 

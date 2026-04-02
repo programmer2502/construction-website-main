@@ -15,8 +15,7 @@ const Listings = () => {
   const typeParam = searchParams.get('type') || 'All';
   const catParam = searchParams.get('cat') || 'All';
 
-  // For demo, just duplicating mock data or filtering it
-  let displayedProperties = [...featuredProperties, ...featuredProperties];
+  let displayedProperties = [...featuredProperties];
   
   if (typeParam !== 'All') {
     displayedProperties = displayedProperties.filter(p => p.type === typeParam);

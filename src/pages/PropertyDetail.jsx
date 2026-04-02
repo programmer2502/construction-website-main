@@ -16,20 +16,25 @@ const PropertyDetail = () => {
   const { featuredProperties, teamAgents, companyInfo } = useData();
   const isSaved = isInWishlist(id);
 
-  // Find property from mock data, default to first if not found
-  const property = featuredProperties.find(p => p.id === id) || featuredProperties[0];
-  const agent = property.agentId ? teamAgents.find(a => a.id === property.agentId) || teamAgents[0] : teamAgents[0]; // Assign specific agent or random agent
+  const property = featuredProperties.find(p => p.id === id);
+
+  if (!property) {
+    return (
+      <div className="container mt-5 pt-5 text-center" style={{ minHeight: '60vh' }}>
+        <h2 className="mt-5 pt-5">Property Not Found</h2>
+        <p className="text-muted">The property you are looking for does not exist or has been removed.</p>
+        <Link to="/listings" className="btn btn-primary mt-3">Browse All Properties</Link>
+      </div>
+    );
+  }
+
+  const agent = property.agentId ? teamAgents.find(a => a.id === property.agentId) || teamAgents[0] || {} : teamAgents[0] || {};
 
   // Handle dynamic amenities or fallback to empty array
   const amenitiesList = property.amenities ? property.amenities.split(',').map(a => a.trim()) : [];
 
   // Animated Slider Logic
-  const images = property.images || [
-    property.image,
-    "https://images.unsplash.com/photo-1628102491629-77858abdd15d?auto=format&fit=crop&w=1200&q=80",
-    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
-    "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80"
-  ];
+  const images = property.images || (property.image ? [property.image] : []);
   const [currentImgIndex, setCurrentImgIndex] = useState(0);
 
   const nextImage = () => setCurrentImgIndex((prev) => (prev + 1) % images.length);
