@@ -35,32 +35,28 @@ const Admin = () => {
   const [formData, setFormData] = useState({});
   const [uploading, setUploading] = useState(false);
 
+  const uploadToImageKit = async (file) => {
+    const uploadData = new FormData();
+    uploadData.append("file", file);
+    uploadData.append("fileName", file.name);
+    const privateKey = "private_ytooRsSUoAlXPYlGSDHpjbTrAQ8=";
+    const authHeader = `Basic ${btoa(privateKey + ":")}` ;
+    const response = await fetch("https://upload.imagekit.io/api/v1/files/upload", {
+      method: "POST",
+      body: uploadData,
+      headers: { Authorization: authHeader },
+    });
+    if (!response.ok) throw new Error("Upload failed");
+    return (await response.json()).url;
+  };
+
   const handleFileUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
     setUploading(true);
     try {
-      const uploadData = new FormData();
-      uploadData.append("file", file);
-      uploadData.append("fileName", file.name);
-
-      const privateKey = "private_ytooRsSUoAlXPYlGSDHpjbTrAQ8=";
-      const authHeader = `Basic ${btoa(privateKey + ":")}`;
-
-      const response = await fetch("https://upload.imagekit.io/api/v1/files/upload", {
-        method: "POST",
-        body: uploadData,
-        headers: {
-          Authorization: authHeader,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Upload failed");
-      }
-
-      const data = await response.json();
-      setFormData(prev => ({ ...prev, image: data.url }));
+      const url = await uploadToImageKit(file);
+      setFormData(prev => ({ ...prev, image: url }));
     } catch (error) {
       console.error("Upload error", error);
       alert("Image upload failed.");
@@ -69,14 +65,61 @@ const Admin = () => {
     }
   };
 
+  // Multi-image helpers (for property gallery)
+  const handleMultipleFileUpload = async (e) => {
+    const files = Array.from(e.target.files);
+    if (!files.length) return;
+    setUploading(true);
+    try {
+      const urls = await Promise.all(files.map(uploadToImageKit));
+      setFormData(prev => {
+        const existing = Array.isArray(prev.images) ? prev.images : (prev.image ? [prev.image] : []);
+        const merged = [...existing, ...urls];
+        return { ...prev, images: merged, image: merged[0] };
+      });
+    } catch (error) {
+      console.error("Upload error", error);
+      alert("One or more image uploads failed.");
+    } finally {
+      setUploading(false);
+      e.target.value = '';
+    }
+  };
+
+  const addImageUrl = (url) => {
+    if (!url.trim()) return;
+    setFormData(prev => {
+      const existing = Array.isArray(prev.images) ? prev.images : (prev.image ? [prev.image] : []);
+      const merged = [...existing, url.trim()];
+      return { ...prev, images: merged, image: merged[0] };
+    });
+  };
+
+  const removeImage = (idx) => {
+    setFormData(prev => {
+      const updated = (Array.isArray(prev.images) ? prev.images : []).filter((_, i) => i !== idx);
+      return { ...prev, images: updated, image: updated[0] || '' };
+    });
+  };
+
+  const [newImageUrlInput, setNewImageUrlInput] = useState('');
+
   const startEdit = (item) => {
     setEditingId(item.id);
-    setFormData(item);
+    // Normalise images array on edit
+    const images = Array.isArray(item.images)
+      ? item.images
+      : item.image
+        ? [item.image]
+        : [];
+    setFormData({ ...item, images });
+    setNewImageUrlInput('');
   };
 
   const cancelEdit = () => {
     setEditingId(null);
     setFormData({});
+    setNewImageUrlInput('');
   };
 
   const handleInputChange = (e) => {
@@ -318,13 +361,51 @@ const Admin = () => {
                   <label>Google Maps Link or Iframe</label>
                   <input className="admin-input" name="mapView" value={formData.mapView || ''} onChange={handleInputChange} placeholder="e.g. https://maps.app.goo.gl/... or leave empty" />
                 </div>
-                <div className="admin-form-group">
-                  <label>Image URL</label>
-                  <div style={{ display: 'flex', gap: '10px' }}>
-                    <input className="admin-input" style={{ flex: 1 }} name="image" value={formData.image || ''} onChange={handleInputChange} required placeholder="https://..." />
-                    <input type="file" accept="image/*" onChange={handleFileUpload} disabled={uploading} style={{ padding: '0.4rem', background: 'rgba(255,255,255,0.1)', borderRadius: '8px', color: 'white', maxWidth: '250px' }} />
+                <div className="admin-form-group" style={{ gridColumn: '1 / -1' }}>
+                  <label>Property Images (Gallery)</label>
+                  {/* Uploaded / entered images list */}
+                  {Array.isArray(formData.images) && formData.images.length > 0 && (
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginBottom: '12px' }}>
+                      {formData.images.map((img, idx) => (
+                        <div key={idx} style={{ position: 'relative', width: '90px', height: '90px' }}>
+                          <img src={img} alt={`img-${idx}`} style={{ width: '90px', height: '90px', objectFit: 'cover', borderRadius: '8px', border: idx === 0 ? '2px solid #38bdf8' : '2px solid rgba(255,255,255,0.15)' }} />
+                          {idx === 0 && <span style={{ position: 'absolute', bottom: 4, left: 4, fontSize: '0.6rem', background: '#38bdf8', color: '#000', padding: '1px 5px', borderRadius: '4px' }}>Cover</span>}
+                          <button type="button" onClick={() => removeImage(idx)} style={{ position: 'absolute', top: 2, right: 2, background: '#ef4444', border: 'none', borderRadius: '50%', width: '20px', height: '20px', cursor: 'pointer', color: 'white', fontSize: '12px', lineHeight: '20px', textAlign: 'center', padding: 0 }}>×</button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {/* Upload multiple files */}
+                  <div style={{ display: 'flex', gap: '10px', marginBottom: '8px', flexWrap: 'wrap' }}>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={handleMultipleFileUpload}
+                      disabled={uploading}
+                      style={{ padding: '0.4rem', background: 'rgba(255,255,255,0.1)', borderRadius: '8px', color: 'white', flex: 1, minWidth: '200px' }}
+                    />
                   </div>
-                  {uploading && <span style={{ fontSize: '0.8rem', color: '#38bdf8', marginTop: '4px', display: 'block' }}>Uploading image to ImageKit...</span>}
+                  {/* Or add by URL */}
+                  <div style={{ display: 'flex', gap: '10px' }}>
+                    <input
+                      className="admin-input"
+                      style={{ flex: 1 }}
+                      value={newImageUrlInput}
+                      onChange={e => setNewImageUrlInput(e.target.value)}
+                      placeholder="Paste image URL and click Add"
+                    />
+                    <button
+                      type="button"
+                      className="admin-btn admin-btn-primary"
+                      onClick={() => { addImageUrl(newImageUrlInput); setNewImageUrlInput(''); }}
+                      style={{ whiteSpace: 'nowrap' }}
+                    >
+                      + Add URL
+                    </button>
+                  </div>
+                  {uploading && <span style={{ fontSize: '0.8rem', color: '#38bdf8', marginTop: '4px', display: 'block' }}>Uploading images to ImageKit...</span>}
+                  {(!formData.images || formData.images.length === 0) && <span style={{ fontSize: '0.75rem', color: '#ef4444', marginTop: '4px', display: 'block' }}>At least one image is required</span>}
                 </div>
               </div>
               <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
@@ -338,7 +419,14 @@ const Admin = () => {
             {properties.map(p => (
               <div key={p.id} className="admin-list-item">
                 <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                  {p.image && <img src={p.image} alt={p.title} style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '8px' }} />}
+                  <div style={{ position: 'relative', flexShrink: 0 }}>
+                    {p.image && <img src={p.image} alt={p.title} style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '8px' }} />}
+                    {Array.isArray(p.images) && p.images.length > 1 && (
+                      <span style={{ position: 'absolute', bottom: 2, right: 2, background: 'rgba(0,0,0,0.75)', color: 'white', fontSize: '0.6rem', padding: '1px 4px', borderRadius: '4px' }}>
+                        {p.images.length} photos
+                      </span>
+                    )}
+                  </div>
                   <div className="admin-item-content">
                     <h4>{p.title} <span style={{ fontSize: '0.8rem', background: 'rgba(255,255,255,0.1)', padding: '2px 8px', borderRadius: '12px', marginLeft: '8px' }}>{p.type}</span></h4>
                     <p>{p.price} • {p.location}{p.category && ` • ${p.category}`}</p>
