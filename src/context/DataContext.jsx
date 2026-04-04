@@ -13,10 +13,10 @@ const initialLocations = [];
 const initialPropertyTypes = [];
 
 const initialSiteStats = {
-  listings: '0',
-  clients: '0',
-  cities: '0',
-  satisfaction: '0%'
+  listings: '500+',
+  clients: '1,200+',
+  cities: '15+',
+  satisfaction: '98%'
 };
 
 const initialCompanyInfo = {
