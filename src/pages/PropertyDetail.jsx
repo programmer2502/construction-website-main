@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { MapPin, Bed, Bath, Square, Calendar, Heart, Share2, Check, Info, Map as MapIcon, Image as ImageIcon, ChevronLeft, ChevronRight, User } from 'lucide-react';
+import { MapPin, Bed, Bath, Square, Calendar, Heart, Share2, Check, Info, Map as MapIcon, Image as ImageIcon, ChevronLeft, ChevronRight, User, Loader } from 'lucide-react';
 import PropertyCard from '../components/ui/PropertyCard';
 import Button from '../components/ui/Button';
 import EmiCalculator from '../components/features/EmiCalculator';
@@ -13,17 +13,28 @@ const PropertyDetail = () => {
   const [activeTab, setActiveTab] = useState('overview');
 
   const { isInWishlist, toggleWishlist } = useWishlist();
-  const { featuredProperties, teamAgents, companyInfo } = useData();
+  const { featuredProperties, teamAgents, companyInfo, isInitialized } = useData();
   const isSaved = isInWishlist(id);
 
   const property = featuredProperties.find(p => p.id === id);
 
+  if (!isInitialized) {
+    return (
+      <div className="container mt-5 pt-5 text-center d-flex flex-column align-items-center justify-content-center" style={{ minHeight: '60vh' }}>
+        <Loader size={48} className="animate-spin text-accent" />
+        <p className="mt-3 text-muted">Fetching property details...</p>
+      </div>
+    );
+  }
+
   if (!property) {
     return (
-      <div className="container mt-5 pt-5 text-center" style={{ minHeight: '60vh' }}>
-        <h2 className="mt-5 pt-5">Property Not Found</h2>
-        <p className="text-muted">The property you are looking for does not exist or has been removed.</p>
-        <Link to="/listings" className="btn btn-primary mt-3">Browse All Properties</Link>
+      <div className="container mt-5 pt-5 text-center" style={{ minHeight: '60vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <div className="error-card p-5 shadow-lg rounded-lg bg-white" style={{ maxWidth: '500px', border: '1px solid var(--color-border)' }}>
+          <h2 className="mb-3 text-dark">Property Not Found</h2>
+          <p className="text-muted mb-4">The property you are looking for does not exist or has been removed. Check the link or explore our recent listings.</p>
+          <Link to="/listings" className="btn btn-primary">Browse All Properties</Link>
+        </div>
       </div>
     );
   }

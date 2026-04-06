@@ -135,7 +135,8 @@ export const DataProvider = ({ children }) => {
     setPriceRanges,
     featuredProperties: properties,
     teamAgents: agents,
-    refreshData: fetchData
+    refreshData: fetchData,
+    isInitialized
   };
 
   return (

@@ -31,7 +31,7 @@ const Footer = () => {
             <ul className="footer-links">
               <li><Link to="/about">About Us</Link></li>
               <li><Link to="/agents">Our Agents</Link></li>
-              <li><Link to="#">Careers</Link></li>
+              <li><Link to="/contact">Careers</Link></li>
               <li><Link to="/contact">Contact</Link></li>
             </ul>
           </div>
@@ -42,7 +42,7 @@ const Footer = () => {
               <li><Link to="/listings?type=Buy">Buy a Home</Link></li>
               <li><Link to="/listings?type=Rent">Rent a Home</Link></li>
               <li><Link to="/listings?type=Commercial">Commercial</Link></li>
-              <li><Link to="#">List Your Property</Link></li>
+              <li><Link to="/contact">List Your Property</Link></li>
             </ul>
           </div>
 
