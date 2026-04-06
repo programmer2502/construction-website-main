@@ -1,12 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Bed, Bath, Square, MapPin, Heart } from 'lucide-react';
+import { Bed, Bath, Square, MapPin, Heart, Share2 } from 'lucide-react';
 import { useWishlist } from '../../context/WishlistContext';
 import './PropertyCard.css';
 
 const PropertyCard = ({ property }) => {
   const { isInWishlist, toggleWishlist } = useWishlist();
   const isSaved = isInWishlist(property.id);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyLink = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const url = `${window.location.origin}/property/${property.id}`;
+    navigator.clipboard.writeText(url).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
 
   return (
     <div className="property-card">
@@ -14,16 +25,27 @@ const PropertyCard = ({ property }) => {
         <Link to={`/property/${property.id}`}>
           <img src={property.image} alt={property.title} className="property-image" />
         </Link>
-        <button 
-          className={`wishlist-btn ${isSaved ? 'active' : ''}`}
-          onClick={(e) => {
-            e.preventDefault();
-            toggleWishlist(property.id);
-          }}
-          aria-label={isSaved ? "Remove from wishlist" : "Add to wishlist"}
-        >
-          <Heart size={20} className={isSaved ? "fill-current" : ""} />
-        </button>
+        <div className="property-card-actions">
+          <button 
+            className={`action-btn share-btn ${copied ? 'copied' : ''}`}
+            onClick={handleCopyLink}
+            aria-label="Copy link"
+          >
+            <Share2 size={18} />
+            {copied && <span className="tooltip-text">Copied!</span>}
+          </button>
+          <button 
+            className={`action-btn wishlist-btn ${isSaved ? 'active' : ''}`}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              toggleWishlist(property.id);
+            }}
+            aria-label={isSaved ? "Remove from wishlist" : "Add to wishlist"}
+          >
+            <Heart size={18} className={isSaved ? "fill-current" : ""} />
+          </button>
+        </div>
         <div className="property-badge">{property.type}</div>
       </div>
       

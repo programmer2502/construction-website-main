@@ -18,7 +18,7 @@ const Home = () => {
   const handleSearch = (e) => {
     e.preventDefault();
     const params = new URLSearchParams();
-    if (searchLocation && searchLocation !== 'Any') params.append('loc', searchLocation);
+    if (searchLocation && searchLocation !== 'Any') params.append('location', searchLocation);
     if (searchType && searchType !== 'All') params.append('type', searchType);
     if (searchPrice) params.append('price', searchPrice);
     navigate(`/listings?${params.toString()}`);

@@ -350,6 +350,10 @@ const Admin = () => {
                   <input className="admin-input" type="number" name="area" value={formData.area || 0} onChange={handleInputChange} />
                 </div>
                 <div className="admin-form-group">
+                  <label>Year Built</label>
+                  <input className="admin-input" type="number" name="built" value={formData.built || 2021} onChange={handleInputChange} placeholder="e.g. 2021" />
+                </div>
+                <div className="admin-form-group">
                   <label>Overview</label>
                   <textarea className="admin-input" name="overview" value={formData.overview || ''} onChange={handleInputChange} rows="3" />
                 </div>
@@ -429,7 +433,7 @@ const Admin = () => {
                   </div>
                   <div className="admin-item-content">
                     <h4>{p.title} <span style={{ fontSize: '0.8rem', background: 'rgba(255,255,255,0.1)', padding: '2px 8px', borderRadius: '12px', marginLeft: '8px' }}>{p.type}</span></h4>
-                    <p>{p.price} • {p.location}{p.category && ` • ${p.category}`}</p>
+                    <p>{p.price} • {p.location}{p.category && ` • ${p.category}`} {p.built && ` • Built ${p.built}`}</p>
                   </div>
                 </div>
                 <div className="admin-item-actions">

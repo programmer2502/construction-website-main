@@ -208,7 +208,7 @@ const PropertyDetail = () => {
               <div className="stat-box">
                 <Calendar size={24} className="stat-icon" />
                 <div className="stat-info">
-                  <span className="stat-value">2021</span>
+                  <span className="stat-value">{property.built || '2021'}</span>
                   <span className="stat-name">Built</span>
                 </div>
               </div>

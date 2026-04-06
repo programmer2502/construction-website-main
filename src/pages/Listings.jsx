@@ -14,7 +14,7 @@ const Listings = () => {
   const searchParams = new URLSearchParams(location.search);
   const typeParam = searchParams.get('type') || 'All';
   const catParam = searchParams.get('cat') || 'All';
-  const locParam = searchParams.get('loc') || '';
+  const locParam = searchParams.get('location') || '';
   const priceParam = searchParams.get('price') || '';
 
   const [filters, setFilters] = useState({
@@ -31,7 +31,7 @@ const Listings = () => {
   useEffect(() => {
     setFilters(prev => ({
       ...prev,
-      location: locParam || prev.location,
+      location: locParam,
       types: typeParam !== 'All' ? [typeParam] : prev.types,
     }));
   }, [locParam, typeParam]);
