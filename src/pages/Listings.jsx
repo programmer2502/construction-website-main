@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Grid, List, Map, SlidersHorizontal, ChevronDown } from 'lucide-react';
 import PropertyCard from '../components/ui/PropertyCard';
@@ -8,38 +8,108 @@ import './Listings.css';
 const Listings = () => {
   const [viewMode, setViewMode] = useState('grid'); // 'grid', 'list', 'map'
   const [showFilters, setShowFilters] = useState(false);
-  const { featuredProperties } = useData();
+  const { featuredProperties, propertyTypes, priceRanges } = useData();
   
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const typeParam = searchParams.get('type') || 'All';
   const catParam = searchParams.get('cat') || 'All';
+  const locParam = searchParams.get('loc') || '';
+  const priceParam = searchParams.get('price') || '';
 
-  let displayedProperties = [...featuredProperties];
-  
-  if (typeParam !== 'All') {
-    displayedProperties = displayedProperties.filter(p => p.type === typeParam);
-  }
+  const [filters, setFilters] = useState({
+    location: locParam,
+    types: typeParam !== 'All' ? [typeParam] : [],
+    maxPrice: priceParam 
+      ? (priceParam.includes('-') ? parseInt(priceParam.split('-')[1]) : parseInt(priceParam) || 10000000) 
+      : 10000000,
+    beds: 'Any',
+    amenities: []
+  });
 
-  if (catParam !== 'All') {
-    const term = catParam.toLowerCase();
-    displayedProperties = displayedProperties.filter(p => {
+  // Sync with URL params if they change
+  useEffect(() => {
+    setFilters(prev => ({
+      ...prev,
+      location: locParam || prev.location,
+      types: typeParam !== 'All' ? [typeParam] : prev.types,
+    }));
+  }, [locParam, typeParam]);
+
+  const handleTypeChange = (type) => {
+    setFilters(prev => {
+      if (prev.types.includes(type)) {
+        return { ...prev, types: prev.types.filter(t => t !== type) };
+      } else {
+        return { ...prev, types: [...prev.types, type] };
+      }
+    });
+  };
+
+  const parsePrice = (priceStr) => {
+    if (typeof priceStr === 'number') return priceStr;
+    if (!priceStr) return 0;
+    let val = parseFloat(priceStr.replace(/[^0-9.]/g, ''));
+    if (priceStr.toLowerCase().includes('cr')) val *= 10000000;
+    else if (priceStr.toLowerCase().includes('m')) val *= 1000000;
+    else if (priceStr.toLowerCase().includes('l')) val *= 100000;
+    else if (priceStr.toLowerCase().includes('k')) val *= 1000;
+    return val;
+  };
+
+  let displayedProperties = featuredProperties.filter(p => {
+    // Location Filter
+    if (filters.location && !p.location.toLowerCase().includes(filters.location.toLowerCase())) {
+      return false;
+    }
+    
+    // Property Type Filter
+    if (filters.types.length > 0 && !filters.types.includes(p.type)) {
+      return false;
+    }
+
+    // Price Filter
+    const numericPrice = parsePrice(p.price);
+    if (numericPrice > filters.maxPrice && filters.maxPrice < 10000000) {
+      return false;
+    }
+
+    // Bedrooms Filter
+    if (filters.beds !== 'Any') {
+      const minBeds = parseInt(filters.beds);
+      if (p.beds < minBeds) return false;
+    }
+
+    // URL Category Filter (Legacy support/Direct links)
+    if (catParam !== 'All') {
+      const term = catParam.toLowerCase();
       const typeLow = p.type.toLowerCase();
       const titleLow = p.title.toLowerCase();
-      if (term === 'commercial') return typeLow === 'commercial';
-      if (term === 'apartments') return titleLow.includes('apartment');
-      if (term === 'villas') return titleLow.includes('villa');
-      if (term === 'plots') return titleLow.includes('plot') || titleLow.includes('land');
-      return typeLow.includes(term) || titleLow.includes(term);
-    });
-  }
+      
+      if (term === 'commercial') {
+        if (typeLow !== 'commercial') return false;
+      } else if (term === 'apartments') {
+        if (!titleLow.includes('apartment') && typeLow !== 'apartment') return false;
+      } else if (term === 'villas') {
+        if (!titleLow.includes('villa') && typeLow !== 'villa') return false;
+      } else if (term === 'plots') {
+        if (!titleLow.includes('plot') && !titleLow.includes('land')) return false;
+      } else {
+        if (!typeLow.includes(term) && !titleLow.includes(term)) return false;
+      }
+    }
+
+    return true;
+  });
 
   // Determine the title to display
   let pageTitle = typeParam === 'All' ? 'Sale & Rent' : typeParam;
   if (catParam !== 'All') {
     pageTitle = catParam.charAt(0).toUpperCase() + catParam.slice(1);
-    // Add spaces for camelCase/snake_case if any, though our mock cats are single words mostly
+  } else if (filters.types.length === 1) {
+    pageTitle = filters.types[0];
   }
+
 
   return (
     <div className="listings-page">
@@ -98,37 +168,79 @@ const Listings = () => {
             </div>
             
             <div className="filter-group">
-              <h4>Location</h4>
-              <input type="text" placeholder="City, neighborhood, or zip" className="filter-input" />
+              <div className="d-flex justify-content-between align-items-center">
+                <h4>Location</h4>
+                {filters.location && (
+                  <button 
+                    className="btn btn-link btn-sm p-0 text-decoration-none"
+                    onClick={() => setFilters(prev => ({ ...prev, location: '' }))}
+                  >
+                    Clear
+                  </button>
+                )}
+              </div>
+              <input 
+                type="text" 
+                placeholder="City, neighborhood, or zip" 
+                className="filter-input"
+                value={filters.location}
+                onChange={(e) => setFilters(prev => ({ ...prev, location: e.target.value }))}
+              />
             </div>
             
             <div className="filter-group">
               <h4>Property Type</h4>
               <div className="checkbox-group">
-                <label><input type="checkbox" defaultChecked /> House</label>
-                <label><input type="checkbox" defaultChecked /> Apartment</label>
-                <label><input type="checkbox" /> Villa</label>
-                <label><input type="checkbox" /> Commercial</label>
+                {propertyTypes.length > 0 ? (
+                  propertyTypes.map(pt => (
+                    <label key={pt.id}>
+                      <input 
+                        type="checkbox" 
+                        checked={filters.types.includes(pt.name)}
+                        onChange={() => handleTypeChange(pt.name)}
+                      /> {pt.name}
+                    </label>
+                  ))
+                ) : (
+                  <>
+                    <label><input type="checkbox" checked={filters.types.includes('House')} onChange={() => handleTypeChange('House')} /> House</label>
+                    <label><input type="checkbox" checked={filters.types.includes('Apartment')} onChange={() => handleTypeChange('Apartment')} /> Apartment</label>
+                    <label><input type="checkbox" checked={filters.types.includes('Villa')} onChange={() => handleTypeChange('Villa')} /> Villa</label>
+                    <label><input type="checkbox" checked={filters.types.includes('Commercial')} onChange={() => handleTypeChange('Commercial')} /> Commercial</label>
+                  </>
+                )}
               </div>
             </div>
             
             <div className="filter-group">
-              <h4>Price Range</h4>
-              <input type="range" className="price-slider" min="0" max="10000000" />
+              <h4>Max Price</h4>
+              <input 
+                type="range" 
+                className="price-slider" 
+                min="0" 
+                max="10000000" 
+                step="100000"
+                value={filters.maxPrice}
+                onChange={(e) => setFilters(prev => ({ ...prev, maxPrice: parseInt(e.target.value) }))}
+              />
               <div className="price-labels">
                 <span>₹0</span>
-                <span>₹10M+</span>
+                <span>₹{(filters.maxPrice / 100000).toFixed(0)}L{filters.maxPrice >= 10000000 ? '+' : ''}</span>
               </div>
             </div>
             
             <div className="filter-group">
               <h4>Bedrooms</h4>
               <div className="pill-group">
-                <button className="filter-pill">Any</button>
-                <button className="filter-pill">1</button>
-                <button className="filter-pill">2</button>
-                <button className="filter-pill active">3+</button>
-                <button className="filter-pill">4+</button>
+                {['Any', '1', '2', '3+', '4+'].map(val => (
+                  <button 
+                    key={val}
+                    className={`filter-pill ${filters.beds === val ? 'active' : ''}`}
+                    onClick={() => setFilters(prev => ({ ...prev, beds: val }))}
+                  >
+                    {val}
+                  </button>
+                ))}
               </div>
             </div>
 
@@ -142,7 +254,20 @@ const Listings = () => {
               </div>
             </div>
             
-            <button className="btn btn-primary w-100 mt-4">Apply Filters</button>
+            <button 
+              className="btn btn-outline w-100 mt-4"
+              onClick={() => setFilters({
+                location: '',
+                types: [],
+                maxPrice: 10000000,
+                beds: 'Any',
+                amenities: []
+              })}
+            >
+              Clear All Filters
+            </button>
+            <button className="btn btn-primary w-100 mt-2 d-lg-none" onClick={() => setShowFilters(false)}>Show Results</button>
+
           </aside>
 
           {/* Main Content */}

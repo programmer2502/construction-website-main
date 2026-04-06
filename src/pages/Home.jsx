@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search, Shield, Zap, Users, BarChart } from 'lucide-react';
 import PropertyCard from '../components/ui/PropertyCard';
@@ -11,9 +11,17 @@ const Home = () => {
   const navigate = useNavigate();
   const { featuredProperties, teamAgents, testimonials, categories, hero, locations, propertyTypes, siteStats, priceRanges } = useData();
 
+  const [searchLocation, setSearchLocation] = useState('');
+  const [searchType, setSearchType] = useState('All');
+  const [searchPrice, setSearchPrice] = useState('');
+
   const handleSearch = (e) => {
     e.preventDefault();
-    navigate('/listings');
+    const params = new URLSearchParams();
+    if (searchLocation && searchLocation !== 'Any') params.append('loc', searchLocation);
+    if (searchType && searchType !== 'All') params.append('type', searchType);
+    if (searchPrice) params.append('price', searchPrice);
+    navigate(`/listings?${params.toString()}`);
   };
 
   return (
@@ -29,7 +37,10 @@ const Home = () => {
             <form className="search-bar" onSubmit={handleSearch}>
               <div className="search-input-group">
                 <label>Location</label>
-                <select defaultValue="">
+                <select 
+                  value={searchLocation} 
+                  onChange={(e) => setSearchLocation(e.target.value)}
+                >
                   <option value="" disabled>City, neighborhood</option>
                   <option value="Any">Any Location</option>
                   {locations.map(loc => (
@@ -40,7 +51,10 @@ const Home = () => {
               <div className="search-divider"></div>
               <div className="search-input-group">
                 <label>Property Type</label>
-                <select defaultValue="">
+                <select 
+                  value={searchType} 
+                  onChange={(e) => setSearchType(e.target.value)}
+                >
                   <option value="" disabled>Select type</option>
                   <option value="All">All Types</option>
                   {propertyTypes.map(pt => (
@@ -51,7 +65,10 @@ const Home = () => {
               <div className="search-divider"></div>
               <div className="search-input-group">
                 <label>Price Range</label>
-                <select defaultValue="">
+                <select 
+                  value={searchPrice} 
+                  onChange={(e) => setSearchPrice(e.target.value)}
+                >
                   <option value="" disabled>Any price</option>
                   {priceRanges && priceRanges.map(pr => (
                     <option key={pr.id} value={pr.value}>{pr.label}</option>

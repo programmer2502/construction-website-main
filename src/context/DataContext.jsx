@@ -43,7 +43,7 @@ export const DataProvider = ({ children }) => {
   const [siteStats, setSiteStats] = useState(initialSiteStats);
   const [companyInfo, setCompanyInfo] = useState(initialCompanyInfo);
   const [priceRanges, setPriceRanges] = useState(initialPriceRanges);
-  
+
   const [isInitialized, setIsInitialized] = useState(false);
   const isDataLoaded = React.useRef(false);
 
@@ -57,7 +57,7 @@ export const DataProvider = ({ children }) => {
       const data = await res.json();
       if (data && !data.error) {
         skipNextSave.current = true; // Mark the upcoming state changes as originating from the server
-        
+
         if (data.properties && Array.isArray(data.properties)) setProperties(data.properties);
         if (data.agents && Array.isArray(data.agents)) setAgents(data.agents);
         if (data.testimonials && Array.isArray(data.testimonials)) setTestimonials(data.testimonials);
@@ -68,7 +68,7 @@ export const DataProvider = ({ children }) => {
         if (data.siteStats && Object.keys(data.siteStats).length > 0) setSiteStats(data.siteStats);
         if (data.companyInfo && Object.keys(data.companyInfo).length > 0) setCompanyInfo(data.companyInfo);
         if (data.priceRanges && Array.isArray(data.priceRanges)) setPriceRanges(data.priceRanges);
-        
+
         isDataLoaded.current = true;
       }
     } catch (err) {
@@ -88,7 +88,7 @@ export const DataProvider = ({ children }) => {
   // Save to DB on any data change (debounced)
   useEffect(() => {
     if (!isInitialized || !isDataLoaded.current) return;
-    
+
     if (isFirstRender.current) {
       isFirstRender.current = false;
       return;
