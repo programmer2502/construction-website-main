@@ -11,12 +11,33 @@ import './PropertyDetail.css';
 const PropertyDetail = () => {
   const { id } = useParams();
   const [activeTab, setActiveTab] = useState('overview');
+  const [currentImgIndex, setCurrentImgIndex] = useState(0);
+  const [contactData, setContactData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    language: '',
+    message: ''
+  });
 
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { featuredProperties, teamAgents, companyInfo, isInitialized } = useData();
   const isSaved = isInWishlist(id);
 
   const property = featuredProperties.find(p => p.id === id);
+  const images = property?.images || (property?.image ? [property.image] : []);
+  const amenitiesList = property?.amenities ? property.amenities.split(',').map(a => a.trim()) : [];
+  const agent = property?.agentId ? teamAgents.find(a => a.id === property.agentId) || teamAgents[0] || {} : teamAgents[0] || {};
+
+  const nextImage = () => setCurrentImgIndex((prev) => (prev + 1) % (images.length || 1));
+  const prevImage = () => setCurrentImgIndex((prev) => (prev - 1 + (images.length || 1)) % (images.length || 1));
+
+  useEffect(() => {
+    if (images.length > 1) {
+      const timer = setInterval(nextImage, 4000);
+      return () => clearInterval(timer);
+    }
+  }, [images.length]);
 
   if (!isInitialized) {
     return (
@@ -38,32 +59,6 @@ const PropertyDetail = () => {
       </div>
     );
   }
-
-  const agent = property.agentId ? teamAgents.find(a => a.id === property.agentId) || teamAgents[0] || {} : teamAgents[0] || {};
-
-  // Handle dynamic amenities or fallback to empty array
-  const amenitiesList = property.amenities ? property.amenities.split(',').map(a => a.trim()) : [];
-
-  // Animated Slider Logic
-  const images = property.images || (property.image ? [property.image] : []);
-  const [currentImgIndex, setCurrentImgIndex] = useState(0);
-
-  const nextImage = () => setCurrentImgIndex((prev) => (prev + 1) % images.length);
-  const prevImage = () => setCurrentImgIndex((prev) => (prev - 1 + images.length) % images.length);
-
-  useEffect(() => {
-    const timer = setInterval(nextImage, 4000); // Auto-play every 4 seconds
-    return () => clearInterval(timer);
-  }, []);
-
-  // Contact Form State
-  const [contactData, setContactData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    language: '',
-    message: ''
-  });
 
   const handleContactSubmit = (e) => {
     e.preventDefault();

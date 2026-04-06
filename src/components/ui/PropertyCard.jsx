@@ -13,10 +13,25 @@ const PropertyCard = ({ property }) => {
     e.preventDefault();
     e.stopPropagation();
     const url = `${window.location.origin}/property/${property.id}`;
-    navigator.clipboard.writeText(url).then(() => {
+    
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      }).catch(err => {
+        console.error("Failed to copy link:", err);
+      });
+    } else {
+      // Fallback for browsers that don't support navigator.clipboard or non-secure contexts
+      const el = document.createElement('textarea');
+      el.value = url;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-    });
+    }
   };
 
   return (
