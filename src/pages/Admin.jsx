@@ -4,7 +4,7 @@ import { Plus, Edit2, Trash2, Save, X, Lock, LogOut } from 'lucide-react';
 import './Admin.css';
 
 const Admin = () => {
-  const { properties, setProperties, agents, setAgents, testimonials, setTestimonials, categories, setCategories, hero, setHero, locations, setLocations, propertyTypes, setPropertyTypes, siteStats, setSiteStats, companyInfo, setCompanyInfo, priceRanges, setPriceRanges } = useData();
+  const { properties, setProperties, agents, setAgents, testimonials, setTestimonials, categories, setCategories, hero, setHero, locations, setLocations, propertyTypes, setPropertyTypes, siteStats, setSiteStats, companyInfo, setCompanyInfo, priceRanges, setPriceRanges, saveData } = useData();
   const [activeTab, setActiveTab] = useState('properties');
 
   // Auth state
@@ -136,12 +136,15 @@ const Admin = () => {
     } else {
       setProperties(properties.map(p => p.id === editingId ? formData : p));
     }
+    setTimeout(() => saveData(), 100);
     cancelEdit();
   };
 
   const deleteProperty = (id) => {
     if (window.confirm('Delete this property?')) {
-      setProperties(properties.filter(p => p.id !== id));
+      const updated = properties.filter(p => p.id !== id);
+      setProperties(updated);
+      setTimeout(() => saveData({ ...useData(), properties: updated }), 100);
     }
   };
 
@@ -154,12 +157,15 @@ const Admin = () => {
     } else {
       setAgents(agents.map(a => a.id === editingId ? formData : a));
     }
+    setTimeout(() => saveData(), 100);
     cancelEdit();
   };
 
   const deleteAgent = (id) => {
     if (window.confirm('Delete this agent?')) {
-      setAgents(agents.filter(a => a.id !== id));
+      const updated = agents.filter(a => a.id !== id);
+      setAgents(updated);
+      setTimeout(() => saveData({ ...useData(), agents: updated }), 100);
     }
   };
 
@@ -172,12 +178,15 @@ const Admin = () => {
     } else {
       setTestimonials(testimonials.map(t => t.id === editingId ? formData : t));
     }
+    setTimeout(() => saveData(), 100);
     cancelEdit();
   };
 
   const deleteTestimonial = (id) => {
     if (window.confirm('Delete this testimonial?')) {
-      setTestimonials(testimonials.filter(t => t.id !== id));
+      const updated = testimonials.filter(t => t.id !== id);
+      setTestimonials(updated);
+      setTimeout(() => saveData({ ...useData(), testimonials: updated }), 100);
     }
   };
 
@@ -190,12 +199,15 @@ const Admin = () => {
     } else {
       setCategories(categories.map(c => c.id === editingId ? formData : c));
     }
+    setTimeout(() => saveData(), 100);
     cancelEdit();
   };
 
   const deleteCategory = (id) => {
     if (window.confirm('Delete this category?')) {
-      setCategories(categories.filter(c => c.id !== id));
+      const updated = categories.filter(c => c.id !== id);
+      setCategories(updated);
+      setTimeout(() => saveData({ ...useData(), categories: updated }), 100);
     }
   };
 
@@ -208,12 +220,15 @@ const Admin = () => {
     } else {
       setLocations(locations.map(l => l.id === editingId ? formData : l));
     }
+    setTimeout(() => saveData(), 100);
     cancelEdit();
   };
 
   const deleteLocation = (id) => {
     if (window.confirm('Delete this location?')) {
-      setLocations(locations.filter(l => l.id !== id));
+      const updated = locations.filter(l => l.id !== id);
+      setLocations(updated);
+      setTimeout(() => saveData({ ...useData(), locations: updated }), 100);
     }
   };
 
@@ -226,12 +241,15 @@ const Admin = () => {
     } else {
       setPropertyTypes(propertyTypes.map(pt => pt.id === editingId ? formData : pt));
     }
+    setTimeout(() => saveData(), 100);
     cancelEdit();
   };
 
   const deletePropertyType = (id) => {
     if (window.confirm('Delete this property type?')) {
-      setPropertyTypes(propertyTypes.filter(pt => pt.id !== id));
+      const updated = propertyTypes.filter(pt => pt.id !== id);
+      setPropertyTypes(updated);
+      setTimeout(() => saveData({ ...useData(), propertyTypes: updated }), 100);
     }
   };
 
@@ -239,6 +257,7 @@ const Admin = () => {
   const saveHero = (e) => {
     e.preventDefault();
     setHero(formData);
+    setTimeout(() => saveData(), 100);
     alert('Hero settings saved!');
   };
 
@@ -251,12 +270,15 @@ const Admin = () => {
     } else {
       setPriceRanges(priceRanges.map(pr => pr.id === editingId ? formData : pr));
     }
+    setTimeout(() => saveData(), 100);
     cancelEdit();
   };
 
   const deletePriceRange = (id) => {
     if (window.confirm('Delete this price range?')) {
-      setPriceRanges(priceRanges.filter(pr => pr.id !== id));
+      const updated = priceRanges.filter(pr => pr.id !== id);
+      setPriceRanges(updated);
+      setTimeout(() => saveData({ ...useData(), priceRanges: updated }), 100);
     }
   };
 
@@ -275,6 +297,7 @@ const Admin = () => {
       email: formData.email,
       address: formData.address
     });
+    setTimeout(() => saveData(), 100);
     alert('Settings saved!');
   };
 

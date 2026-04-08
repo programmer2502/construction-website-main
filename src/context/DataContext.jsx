@@ -85,6 +85,21 @@ export const DataProvider = ({ children }) => {
 
   // Removed aggressive background sync periodically to prevent state reverted issues
 
+  const saveData = async (currentData) => {
+    const dataToSave = currentData || {
+      properties, agents, testimonials, categories, hero, locations, propertyTypes, siteStats, companyInfo, priceRanges
+    };
+    try {
+      await fetch('/api/data', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dataToSave)
+      });
+    } catch (err) {
+      console.error("Error saving data to DB:", err);
+    }
+  };
+
   // Save to DB on any data change (debounced)
   useEffect(() => {
     if (!isInitialized || !isDataLoaded.current) return;
@@ -100,14 +115,8 @@ export const DataProvider = ({ children }) => {
     }
 
     const timeoutId = setTimeout(() => {
-      fetch('/api/data', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          properties, agents, testimonials, categories, hero, locations, propertyTypes, siteStats, companyInfo, priceRanges
-        })
-      }).catch(err => console.error("Error saving data to DB:", err));
-    }, 1000);
+      saveData();
+    }, 500);
 
     return () => clearTimeout(timeoutId);
   }, [properties, agents, testimonials, categories, hero, locations, propertyTypes, siteStats, companyInfo, priceRanges, isInitialized]);
@@ -133,6 +142,7 @@ export const DataProvider = ({ children }) => {
     setCompanyInfo,
     priceRanges,
     setPriceRanges,
+    saveData,
     featuredProperties: properties,
     teamAgents: agents,
     refreshData: fetchData,

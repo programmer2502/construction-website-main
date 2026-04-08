@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 
 // URL encode the '@' character in the password if necessary
-const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://Construction:Construction%40334@cluster0.8kr84vh.mongodb.net/constructionApp?retryWrites=true&w=majority";
+const MONGO_URI = process.env.MONGO_URI;
 
 let cachedConnection = null;
 
@@ -75,16 +75,28 @@ app.post('/api/data', async (req, res) => {
     let data = await AppData.findOne();
     
     if (data) {
-      data.properties = newData.properties || data.properties;
-      data.agents = newData.agents || data.agents;
-      data.testimonials = newData.testimonials || data.testimonials;
-      data.categories = newData.categories || data.categories;
-      data.hero = newData.hero || data.hero;
-      data.locations = newData.locations || data.locations;
-      data.propertyTypes = newData.propertyTypes || data.propertyTypes;
-      data.siteStats = newData.siteStats || data.siteStats;
-      data.companyInfo = newData.companyInfo || data.companyInfo;
-      data.priceRanges = newData.priceRanges || data.priceRanges;
+      if (newData.properties) data.properties = newData.properties;
+      if (newData.agents) data.agents = newData.agents;
+      if (newData.testimonials) data.testimonials = newData.testimonials;
+      if (newData.categories) data.categories = newData.categories;
+      if (newData.hero) data.hero = newData.hero;
+      if (newData.locations) data.locations = newData.locations;
+      if (newData.propertyTypes) data.propertyTypes = newData.propertyTypes;
+      if (newData.siteStats) data.siteStats = newData.siteStats;
+      if (newData.companyInfo) data.companyInfo = newData.companyInfo;
+      if (newData.priceRanges) data.priceRanges = newData.priceRanges;
+      
+      data.markModified('properties'); // Ensure mongoose detects changes in arrays
+      data.markModified('agents');
+      data.markModified('testimonials');
+      data.markModified('categories');
+      data.markModified('hero');
+      data.markModified('locations');
+      data.markModified('propertyTypes');
+      data.markModified('siteStats');
+      data.markModified('companyInfo');
+      data.markModified('priceRanges');
+
       await data.save();
     } else {
       data = new AppData(newData);
