@@ -284,7 +284,7 @@ const Admin = () => {
         <div className="admin-glass-panel animate-fade-in">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
             <h2>Manage Properties (Villas & Others)</h2>
-            <button className="admin-btn admin-btn-primary" onClick={() => startEdit({ id: 'new', type: 'Buy', beds: 0, baths: 0, area: 0 })}>
+            <button className="admin-btn admin-btn-primary" onClick={() => startEdit({ id: 'new', type: '', beds: 0, baths: 0, area: 0 })}>
               <Plus size={18} /> Add Property
             </button>
           </div>
