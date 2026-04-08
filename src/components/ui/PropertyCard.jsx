@@ -61,7 +61,9 @@ const PropertyCard = ({ property }) => {
             <Heart size={18} className={isSaved ? "fill-current" : ""} />
           </button>
         </div>
-        <div className="property-badge">{property.type}</div>
+        {(property.type || property.category) && (
+          <div className="property-badge">{property.type || property.category}</div>
+        )}
       </div>
       
       <div className="property-content">

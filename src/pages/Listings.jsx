@@ -202,12 +202,7 @@ const Listings = () => {
                     </label>
                   ))
                 ) : (
-                  <>
-                    <label><input type="checkbox" checked={filters.types.includes('House')} onChange={() => handleTypeChange('House')} /> House</label>
-                    <label><input type="checkbox" checked={filters.types.includes('Apartment')} onChange={() => handleTypeChange('Apartment')} /> Apartment</label>
-                    <label><input type="checkbox" checked={filters.types.includes('Villa')} onChange={() => handleTypeChange('Villa')} /> Villa</label>
-                    <label><input type="checkbox" checked={filters.types.includes('Commercial')} onChange={() => handleTypeChange('Commercial')} /> Commercial</label>
-                  </>
+                  <p className="text-muted small">No property types defined in Admin.</p>
                 )}
               </div>
             </div>

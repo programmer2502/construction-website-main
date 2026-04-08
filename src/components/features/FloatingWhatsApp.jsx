@@ -5,7 +5,7 @@ import './FloatingWhatsApp.css';
 
 const FloatingWhatsApp = ({ phoneNumber }) => {
   const { companyInfo } = useData();
-  const displayPhone = phoneNumber || companyInfo?.whatsapp || '9880345558';
+  const displayPhone = phoneNumber || companyInfo?.whatsapp || '';
   return (
     <a
       href={`https://wa.me/${displayPhone}`}

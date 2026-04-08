@@ -65,8 +65,8 @@ const PropertyDetail = () => {
     const waText = `*New Property Inquiry*\n\n*Property:* ${property.title} (${property.location})\n*Name:* ${contactData.name}\n*Email:* ${contactData.email}\n*Phone:* ${contactData.phone}\n*Language:* ${contactData.language}\n\n*Message:*\n${contactData.message}`;
     
     // Clean target number and ensure country code
-    let targetNumber = (companyInfo?.whatsapp || '9880345558').replace(/[^0-9]/g, '');
-    if (targetNumber.length === 10) targetNumber = '91' + targetNumber;
+    let targetNumber = (companyInfo?.whatsapp || '').replace(/[^0-9]/g, '');
+    if (targetNumber && targetNumber.length === 10) targetNumber = '91' + targetNumber;
 
     window.open(`https://wa.me/${targetNumber}?text=${encodeURIComponent(waText)}`, '_blank');
   };
@@ -214,7 +214,7 @@ const PropertyDetail = () => {
               <div className="stat-box">
                 <Calendar size={24} className="stat-icon" />
                 <div className="stat-info">
-                  <span className="stat-value">{property.built || '2021'}</span>
+                  <span className="stat-value">{property.built || 'N/A'}</span>
                   <span className="stat-name">Built</span>
                 </div>
               </div>
@@ -249,11 +249,7 @@ const PropertyDetail = () => {
                   {property.overview ? (
                     <p style={{ whiteSpace: 'pre-line' }}>{property.overview}</p>
                   ) : (
-                    <>
-                      <p>Experience the pinnacle of luxury living in this exquisite property located in the heart of {property.location}. Boasting {property.area} square feet of meticulously designed living space, this home features {property.beds} generously sized bedrooms and {property.baths} spa-like bathrooms.</p>
-                      <p>The open-concept floor plan seamlessly integrates indoor and outdoor living areas, perfect for entertaining guests or enjoying quiet family evenings. High-end finishes throughout include custom cabinetry, premium hardwood flooring, and state-of-the-art smart home integration.</p>
-                      <p>Residents will appreciate the breathtaking city views, the private landscaped garden, and the unparalleled access to top-tier dining, shopping, and entertainment options just steps away.</p>
-                    </>
+                      <p>No description available for this property.</p>
                   )}
                 </div>
               )}
@@ -362,14 +358,14 @@ const PropertyDetail = () => {
                 </form>
 
                 <div className="quick-contact">
-                  <a href={`tel:${agent.phone || companyInfo?.phone || '+91 9880345558'}`} className="btn btn-outline w-100 mb-2 mt-2">Call Person</a>
+                  <a href={`tel:${agent.phone || companyInfo?.phone || ''}`} className="btn btn-outline w-100 mb-2 mt-2">Call Person</a>
                   <a href={`https://wa.me/${companyInfo?.whatsapp || (agent.phone ? agent.phone.replace(/[^0-9]/g, '') : '919880345558')}`} target="_blank" rel="noreferrer" className="btn btn-primary whatsapp-btn w-100">
                     WhatsApp
                   </a>
                 </div>
               </div>
 
-              {property.type === 'Buy' && <EmiCalculator defaultPrice={parseInt(property.price.replace(/[^0-9]/g, '')) || 1000000} />}
+              {property.price && (property.price.toLowerCase().includes('cr') || property.price.toLowerCase().includes('l') || parseInt(property.price.replace(/[^0-9]/g, '')) > 100000) && <EmiCalculator defaultPrice={parseInt(property.price.replace(/[^0-9]/g, '')) || 0} />}
             </div>
           </aside>
         </div>

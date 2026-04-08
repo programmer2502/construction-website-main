@@ -284,7 +284,7 @@ const Admin = () => {
         <div className="admin-glass-panel animate-fade-in">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
             <h2>Manage Properties (Villas & Others)</h2>
-            <button className="admin-btn admin-btn-primary" onClick={() => startEdit({ id: 'new', type: '', beds: 0, baths: 0, area: 0 })}>
+            <button className="admin-btn admin-btn-primary" onClick={() => startEdit({ id: 'new' })}>
               <Plus size={18} /> Add Property
             </button>
           </div>
@@ -351,7 +351,7 @@ const Admin = () => {
                 </div>
                 <div className="admin-form-group">
                   <label>Year Built</label>
-                  <input className="admin-input" type="number" name="built" value={formData.built || 2021} onChange={handleInputChange} placeholder="e.g. 2021" />
+                  <input className="admin-input" type="number" name="built" value={formData.built || ''} onChange={handleInputChange} placeholder="e.g. 2024" />
                 </div>
                 <div className="admin-form-group">
                   <label>Overview</label>

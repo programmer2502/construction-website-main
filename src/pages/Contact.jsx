@@ -18,7 +18,7 @@ const Contact = () => {
     e.preventDefault();
     const waText = `*New General Inquiry*\n\n*Name:* ${contactData.firstName} ${contactData.lastName}\n*Email:* ${contactData.email}\n*Subject:* ${contactData.subject}\n\n*Message:*\n${contactData.message}`;
     
-    let targetNumber = (companyInfo?.whatsapp || '9880345558').replace(/[^0-9]/g, '');
+    let targetNumber = (companyInfo?.whatsapp || '').replace(/[^0-9]/g, '');
     if (targetNumber.length === 10) targetNumber = '91' + targetNumber;
 
     window.open(`https://wa.me/${targetNumber}?text=${encodeURIComponent(waText)}`, '_blank');
@@ -43,7 +43,7 @@ const Contact = () => {
               </div>
               <div>
                 <h5 style={{ marginBottom: '0.25rem' }}>Our Office</h5>
-                <p className="text-muted" style={{ margin: 0 }}>{companyInfo?.address || 'Panathur, Bangalore 560087'}</p>
+                <p className="text-muted" style={{ margin: 0 }}>{companyInfo?.address || 'N/A'}</p>
               </div>
             </div>
 
@@ -53,7 +53,7 @@ const Contact = () => {
               </div>
               <div>
                 <h5 style={{ marginBottom: '0.25rem' }}>Phone</h5>
-                <p className="text-muted" style={{ margin: 0 }}>{companyInfo?.phone || '+91 9880345558'}</p>
+                <p className="text-muted" style={{ margin: 0 }}>{companyInfo?.phone || 'N/A'}</p>
               </div>
             </div>
 
@@ -63,7 +63,7 @@ const Contact = () => {
               </div>
               <div>
                 <h5 style={{ marginBottom: '0.25rem' }}>Email</h5>
-                <p className="text-muted" style={{ margin: 0 }}>{companyInfo?.email || 'info@Land24.com'}</p>
+                <p className="text-muted" style={{ margin: 0 }}>{companyInfo?.email || 'N/A'}</p>
               </div>
             </div>
 
@@ -78,7 +78,7 @@ const Contact = () => {
             </div>
 
             <div className="mt-5" style={{ marginTop: '3rem' }}>
-              <a href={`https://wa.me/${companyInfo?.whatsapp || '9880345558'}`} target="_blank" rel="noreferrer" className="btn w-100" style={{ backgroundColor: '#25D366', color: '#fff', width: '100%', display: 'flex', justifyContent: 'center' }}>Chat on WhatsApp</a>
+              <a href={`https://wa.me/${companyInfo?.whatsapp || ''}`} target="_blank" rel="noreferrer" className="btn w-100" style={{ backgroundColor: '#25D366', color: '#fff', width: '100%', display: 'flex', justifyContent: 'center' }}>Chat on WhatsApp</a>
             </div>
           </div>
 
