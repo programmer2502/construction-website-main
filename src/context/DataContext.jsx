@@ -43,6 +43,17 @@ export const DataProvider = ({ children }) => {
   const [siteStats, setSiteStats] = useState(initialSiteStats);
   const [companyInfo, setCompanyInfo] = useState(initialCompanyInfo);
   const [priceRanges, setPriceRanges] = useState(initialPriceRanges);
+  
+  const dataRef = React.useRef({
+    properties, agents, testimonials, categories, hero, locations, propertyTypes, siteStats, companyInfo, priceRanges
+  });
+
+  // Keep ref in sync with latest state
+  useEffect(() => {
+    dataRef.current = {
+      properties, agents, testimonials, categories, hero, locations, propertyTypes, siteStats, companyInfo, priceRanges
+    };
+  }, [properties, agents, testimonials, categories, hero, locations, propertyTypes, siteStats, companyInfo, priceRanges]);
 
   const [isInitialized, setIsInitialized] = useState(false);
   const isDataLoaded = React.useRef(false);
@@ -85,10 +96,8 @@ export const DataProvider = ({ children }) => {
 
   // Removed aggressive background sync periodically to prevent state reverted issues
 
-  const saveData = async (currentData) => {
-    const dataToSave = currentData || {
-      properties, agents, testimonials, categories, hero, locations, propertyTypes, siteStats, companyInfo, priceRanges
-    };
+  const saveData = async (manualData) => {
+    const dataToSave = manualData || dataRef.current;
     try {
       await fetch('/api/data', {
         method: 'POST',

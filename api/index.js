@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 
 // URL encode the '@' character in the password if necessary
-const MONGO_URI = process.env.MONGO_URI;
+const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://Construction:Construction%40334@cluster0.8kr84vh.mongodb.net/constructionApp?retryWrites=true&w=majority";
 
 let cachedConnection = null;
 

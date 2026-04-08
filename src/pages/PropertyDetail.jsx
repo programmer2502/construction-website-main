@@ -62,7 +62,8 @@ const PropertyDetail = () => {
 
   const handleContactSubmit = (e) => {
     e.preventDefault();
-    const waText = `*New Property Inquiry*\n\n*Property:* ${property.title} (${property.location})\n*Name:* ${contactData.name}\n*Email:* ${contactData.email}\n*Phone:* ${contactData.phone}\n*Language:* ${contactData.language}\n\n*Message:*\n${contactData.message}`;
+    const propertyUrl = `https://land24.vercel.app/property/${property.id}`;
+    const waText = `*New Property Inquiry*\n\n*Property:* ${property.title} (${property.location})\n*Link:* ${propertyUrl}\n*Name:* ${contactData.name}\n*Email:* ${contactData.email}\n*Phone:* ${contactData.phone}\n*Language:* ${contactData.language}\n\n*Message:*\n${contactData.message}`;
     
     // Clean target number and ensure country code
     let targetNumber = (companyInfo?.whatsapp || '').replace(/[^0-9]/g, '');

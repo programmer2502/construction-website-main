@@ -144,7 +144,7 @@ const Admin = () => {
     if (window.confirm('Delete this property?')) {
       const updated = properties.filter(p => p.id !== id);
       setProperties(updated);
-      setTimeout(() => saveData({ ...useData(), properties: updated }), 100);
+      setTimeout(() => saveData(), 100);
     }
   };
 
@@ -165,7 +165,7 @@ const Admin = () => {
     if (window.confirm('Delete this agent?')) {
       const updated = agents.filter(a => a.id !== id);
       setAgents(updated);
-      setTimeout(() => saveData({ ...useData(), agents: updated }), 100);
+      setTimeout(() => saveData(), 100);
     }
   };
 
@@ -186,7 +186,7 @@ const Admin = () => {
     if (window.confirm('Delete this testimonial?')) {
       const updated = testimonials.filter(t => t.id !== id);
       setTestimonials(updated);
-      setTimeout(() => saveData({ ...useData(), testimonials: updated }), 100);
+      setTimeout(() => saveData(), 100);
     }
   };
 
@@ -207,7 +207,7 @@ const Admin = () => {
     if (window.confirm('Delete this category?')) {
       const updated = categories.filter(c => c.id !== id);
       setCategories(updated);
-      setTimeout(() => saveData({ ...useData(), categories: updated }), 100);
+      setTimeout(() => saveData(), 100);
     }
   };
 
@@ -228,7 +228,7 @@ const Admin = () => {
     if (window.confirm('Delete this location?')) {
       const updated = locations.filter(l => l.id !== id);
       setLocations(updated);
-      setTimeout(() => saveData({ ...useData(), locations: updated }), 100);
+      setTimeout(() => saveData(), 100);
     }
   };
 
@@ -249,7 +249,7 @@ const Admin = () => {
     if (window.confirm('Delete this property type?')) {
       const updated = propertyTypes.filter(pt => pt.id !== id);
       setPropertyTypes(updated);
-      setTimeout(() => saveData({ ...useData(), propertyTypes: updated }), 100);
+      setTimeout(() => saveData(), 100);
     }
   };
 
@@ -278,7 +278,7 @@ const Admin = () => {
     if (window.confirm('Delete this price range?')) {
       const updated = priceRanges.filter(pr => pr.id !== id);
       setPriceRanges(updated);
-      setTimeout(() => saveData({ ...useData(), priceRanges: updated }), 100);
+      setTimeout(() => saveData(), 100);
     }
   };
 
